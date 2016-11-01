@@ -1,204 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.rotimi.finder.main.myreports.MyReportDetails">
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:padding="10dp"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:theme="@style/MyMaterialTheme.AppBarOverlay">
 
-        <TextView
-            android:text="@string/name"
-            android:gravity="left"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16dp"
-            android:layout_marginBottom="10dp"
-            style="@style/TextAppearance.AppCompat.Headline"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/MyMaterialTheme.PopupOverlay" />
 
-        <EditText
-            android:id="@+id/myreport.name"
-            android:layout_marginBottom="10dp"
-            android:textSize="12dp"
-            android:drawableBottom="@color/black_overlay"
-            android:inputType="text"
-            android:hint="@string/enter_person_name"
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:padding="10dp"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:text="@string/sex"
-            android:gravity="left"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16dp"
-            android:layout_marginBottom="10dp"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:text="@string/name"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <RadioGroup
-            android:id="@+id/myreport.sex"
-            android:layout_width="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content">
-            
-            <RadioButton
-                android:id="@+id/myreport.sex.male"
+            <EditText
+                android:id="@+id/myreport.name"
+                android:layout_marginBottom="10dp"
+                android:textSize="12dp"
+                android:drawableBottom="@color/black_overlay"
+                android:inputType="text"
+                android:hint="@string/enter_person_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:text="@string/sex"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/myreport.sex"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/myreport.sex.male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/sex_male"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/myreport.sex.female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/sex_female" />
+            </RadioGroup>
+
+            <TextView
+                android:text="@string/age"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/myreport.age"
+                android:layout_marginBottom="10dp"
+                android:textSize="12dp"
+                android:drawableBottom="@color/black_overlay"
+                android:inputType="text"
+                android:hint="@string/enter_person_age"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:text="@string/height"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/myreport.height"
+                android:textSize="12dp"
+                android:drawableBottom="@color/black_overlay"
+                android:layout_marginBottom="10dp"
+                android:inputType="text"
+                android:hint="@string/enter_person_height"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:text="@string/complexion"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/myreport.complexion"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/myreport.complexion.fair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/complexion_light"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/myreport.complexion.dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/complexion_dark" />
+
+                <RadioButton
+                    android:id="@+id/myreport.complexion.brown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/complexion_brown" />
+            </RadioGroup>
+
+            <TextView
+                android:text="@string/police_station"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/myreport.police_station"
+                android:textSize="12dp"
+                android:drawableBottom="@color/black_overlay"
+                android:layout_marginBottom="10dp"
+                android:inputType="text"
+                android:hint="@string/enter_nearest_police_station"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/myreport.upload.picture"
+                android:gravity="left"
+                android:padding="8dp"
+                android:textSize="16dp"
+                android:background="@color/white"
+                android:elevation="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/grey"
-                android:text="@string/sex_male"
-                android:checked="true" />
+                android:textColor="@color/colorPrimary"
+                android:foreground="?android:selectableItemBackground"
+                android:text="@string/upload_picture"/>
 
-            <RadioButton
-                android:id="@+id/myreport.sex.female"
+            <ImageView
+                android:id="@+id/myreport.picture"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:visibility="visible"
+                android:src="@drawable/empty_profile2"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:text="@string/report_type"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/myreport.type"
                 android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/myreport.type.missing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/missing"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/myreport.type.kidnapped"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/kidnapped" />
+
+                <RadioButton
+                    android:id="@+id/myreport.type.wanted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:text="@string/wanted" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/myreport.upload"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textSize="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorAccent"
+                android:elevation="2dp"
+                android:textAllCaps="true"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/grey"
-                android:text="@string/sex_female" />
-        </RadioGroup>
-
-        <TextView
-            android:text="@string/age"
-            android:gravity="left"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16dp"
-            android:layout_marginBottom="10dp"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/myreport.age"
-            android:layout_marginBottom="10dp"
-            android:textSize="12dp"
-            android:drawableBottom="@color/black_overlay"
-            android:inputType="text"
-            android:hint="@string/enter_person_age"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:text="@string/height"
-            android:gravity="left"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16dp"
-            android:layout_marginBottom="10dp"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/myreport.height"
-            android:textSize="12dp"
-            android:drawableBottom="@color/black_overlay"
-            android:layout_marginBottom="10dp"
-            android:inputType="text"
-            android:hint="@string/enter_person_height"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:text="@string/complexion"
-            android:gravity="left"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16dp"
-            android:layout_marginBottom="10dp"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioGroup
-            android:id="@+id/myreport.complexion"
-            android:layout_width="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/myreport.complexion.fair"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey"
-                android:text="@string/complexion_light"
-                android:checked="true" />
-
-            <RadioButton
-                android:id="@+id/myreport.complexion.dark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey"
-                android:text="@string/complexion_dark" />
-
-            <RadioButton
-                android:id="@+id/myreport.complexion.brown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey"
-                android:text="@string/complexion_brown" />
-        </RadioGroup>
-
-        <TextView
-            android:text="@string/police_station"
-            android:gravity="left"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16dp"
-            android:layout_marginBottom="10dp"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/myreport.police_station"
-            android:textSize="12dp"
-            android:drawableBottom="@color/black_overlay"
-            android:layout_marginBottom="10dp"
-            android:inputType="text"
-            android:hint="@string/enter_nearest_police_station"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:id="@+id/myreport.upload.picture"
-            android:gravity="left"
-            android:padding="8dp"
-            android:textSize="16dp"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:foreground="?android:selectableItemBackground"
-            android:text="@string/upload_picture"/>
-
-        <ImageView
-            android:id="@+id/myreport.picture"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:visibility="visible"
-            android:src="@drawable/empty_profile2"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"/>
-
-        <TextView
-            android:id="@+id/myreport.upload"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textSize="16dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorAccent"
-            android:elevation="2dp"
-            android:textAllCaps="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:foreground="?android:selectableItemBackground"
-            android:text="@string/send_report"/>
+                android:textColor="@color/white"
+                android:foreground="?android:selectableItemBackground"
+                android:text="@string/send_report"/>
 
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

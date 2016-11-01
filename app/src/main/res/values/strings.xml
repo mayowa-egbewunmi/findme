@@ -25,8 +25,6 @@
     <string name="calender">CALENDAR</string>
     <string name="shopping">SHOPPING</string>
     <string name="social_network">SOCIAL NETWORK</string>
-
-
     <string name="email_hint">A system for sending and receiving messages electronically over a computer network.</string>
     <string name="calender_hint">Note all your special occasions in calendar and keep them in your finger tips</string>
     <string name="shopping_hint">Shop and get offers, promo codes and discounts on your future purchase.</string>
@@ -130,5 +128,17 @@
     <string name="complexion_light">Light</string>
     <string name="police_station">Nearest Police Station</string>
     <string name="send_report">Send Report</string>
-
+    <string name="wanted">Wanted</string>
+    <string name="kidnapped">Kidnapped</string>
+    <string name="missing">Missing</string>
+    <string name="report_type">Report type</string>
+    <string name="_age">23</string>
+    <string name="sample_height">5ft</string>
+    <string name="sample_complexion">Light</string>
+    <string name="sample_police_pro">Lagos state PRO</string>
+    <string name="found_report">Report as found</string>
+    <string name="view_sightings">View Sighting Reports</string>
+    <string name="create_sighting">Create Sighting</string>
+    <string name="call_reporting_line">Call Reporting line</string>
+    <string name="call_reporting_number">Call Reporting Line</string>
 </resources>
