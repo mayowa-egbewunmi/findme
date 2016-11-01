@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    card_view:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".table_order.TableOrder">
+
+    <!--<android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        card_view:cardCornerRadius="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="TableFragment 7"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="#222"
+                android:textSize="12dp" />
+
+            &lt;!&ndash;<TextView&ndash;&gt;
+                &lt;!&ndash;android:id="@+id/new_order"&ndash;&gt;
+                &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                &lt;!&ndash;android:padding="8dp"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:text="table 7"&ndash;&gt;
+                &lt;!&ndash;android:gravity="right|center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:textStyle="bold"&ndash;&gt;
+                &lt;!&ndash;android:textColor="#bbb"&ndash;&gt;
+                &lt;!&ndash;android:textSize="12dp" />&ndash;&gt;
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/table_group"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

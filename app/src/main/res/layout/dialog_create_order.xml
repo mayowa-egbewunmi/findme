@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:text="@string/create_order_label"
+        android:id="@+id/title"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimary"
+        android:elevation="2dp"
+        android:padding="12dp"
+        android:textAllCaps="true"
+        android:background="@color/white"
+        android:textSize="16dp"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/create.order.name"
+        android:paddingBottom="5dp"
+        android:textSize="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:inputType="text"
+        android:hint="@string/enter_order_name"
+        android:layout_width="match_parent"
+        android:maxWidth="300dp"
+        android:layout_height="60dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:elevation="2dp"
+        android:background="@color/light_grey"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/create.order.cancel"
+            android:paddingTop="12dp"
+            android:gravity="center"
+            android:paddingBottom="12dp"
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:maxWidth="300dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:foreground="?android:selectableItemBackground"
+            android:text="@string/close"
+            android:textAllCaps="true"
+            tools:ignore="UnusedAttribute" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/create.order.continue"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:textAllCaps="true"
+            android:paddingBottom="12dp"
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:maxWidth="300dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/ThemePink"
+            android:foreground="?android:selectableItemBackground"
+            android:text="@string/_continue"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
+</LinearLayout>

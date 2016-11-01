@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/wanteds.selection.item.lyt"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:id="@+id/wanteds.selection.img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/guiness_logo"
+            android:background="@drawable/circle"/>
+
+        <TextView
+            android:id="@+id/wanteds.selection.name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Guiness"
+            android:padding="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/wanteds.selection.img"
+            android:layout_toRightOf="@+id/wanteds.selection.img"
+            android:textColor="#222"
+            android:layout_marginBottom="10dp"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:id="@+id/wanteds.selection.count.lyt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:visibility="visible"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/wanteds.selection.add"
+                android:layout_width="50dp"
+                android:padding="10dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:tint="@color/grey"
+                android:src="@drawable/ic_add_circle_black_36dp" />
+
+            <TextView
+                android:id="@+id/wanteds.selection.count"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textStyle="bold"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/wanteds.selection.subtract"
+                android:layout_width="50dp"
+                android:padding="10dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:tint="@color/red"
+                android:src="@drawable/ic_remove_circle_black_36dp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ThemeLightPink"/>
+</LinearLayout>

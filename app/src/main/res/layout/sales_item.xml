@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="0dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:id="@+id/sale.frame"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sale.name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:gravity="left"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Table 7"
+                android:layout_centerVertical="true"
+                android:textSize="12dp"
+                android:textColor="#222"/>
+            <TextView
+                android:id="@+id/sale.checkout"
+                android:layout_width="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="left"
+                android:text="Checkout"
+                android:layout_centerVertical="true"
+                android:textSize="12dp"
+                android:textColor="#ff3f80"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sale.items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <View
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="#bbb"/>
+        <TextView
+            android:id="@+id/sale.total"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:textStyle="bold"
+            android:text="#2,800"
+            android:layout_centerVertical="true"
+            android:textSize="12dp"
+            android:textColor="#222"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

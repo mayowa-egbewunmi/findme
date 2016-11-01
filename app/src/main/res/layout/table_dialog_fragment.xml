@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="30dp"
+    tools:context=".TableDialog">
+
+
+    <TextView
+        android:id="@+id/new_table"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Pick a Table"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="#222"
+        android:background="#E3F2FD"
+        android:textSize="12dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/table_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="2dp">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/found.frame"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/found.name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/sample_name"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/found.age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/sample_age"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12dp" />
+
+        <ImageView android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/found.age"
+            android:id="@+id/found.img"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_pix"/>
+
+        <TextView
+            android:id="@+id/found.where"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/where"
+            android:layout_below="@+id/found.img"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/grey"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/found.location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/sample_location"
+            android:layout_below="@+id/found.where"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/found._date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/date"
+            android:layout_below="@+id/found.img"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/grey"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/found.date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/sample_date"
+            android:layout_below="@+id/found._date"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/textColorPrimary"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12dp" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

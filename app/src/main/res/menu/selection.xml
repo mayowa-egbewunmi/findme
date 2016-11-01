@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wanteds   xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_selected"
+        android:orderInCategory="100"
+        android:title="Selected"
+        android:icon="@drawable/ic_playlist_add_check_black_24dp"
+        app:showAsAction="always"/>
+    <item android:id="@+id/search"
+        android:title="@string/hint_search"
+        android:icon="@drawable/ic_search_black_18dp"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+</wanteds>

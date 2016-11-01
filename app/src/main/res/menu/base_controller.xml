@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wanteds xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_dashboard"
+        android:orderInCategory="100"
+        android:title="@string/title_dashboard"
+        android:icon="@drawable/ic_dashboard_black_18dp"
+        app:showAsAction="always"/>
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</wanteds>

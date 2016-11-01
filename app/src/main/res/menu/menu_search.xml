@@ -1,0 +1,15 @@
+<wanteds xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/search"
+        android:title="@string/hint_search"
+        android:icon="@drawable/ic_search_black_18dp"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item
+        android:id="@+id/message.all"
+        android:title="@string/hint_message_all"
+        app:showAsAction="never" />
+
+</wanteds>

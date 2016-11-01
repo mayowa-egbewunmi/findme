@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardBackgroundColor="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp">
+
+            <TextView
+                android:id="@+id/qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/ThemePink"
+                android:text="Qty: 12"/>
+
+            <ImageView
+                android:id="@+id/brand_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/guiness_logo"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle"/>
+
+            <!--<TextView-->
+            <!--android:id="@+id/menu_name"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="12dp"-->
+            <!--android:layout_below="@+id/brand_img"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="#222"-->
+            <!--android:text="Guiness"/>-->
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

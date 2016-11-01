@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#222222</color>
+    <color name="ThemePink">#ff3f80</color>
+    <color name="ThemeLightPink">#FCE4EC</color>
+    <color name="ThemeLightBlue">#E3F2FD</color>
+    <color name="colorPrimaryDark">#161616</color>
+    <color name="textColorPrimary">#161616</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#3F51B5</color>
+    <color name="blue">#7ab9dc</color>
+    <color name="red">#d67777</color>
+    <color name="bg">#F5F5F5</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="grey">#888888</color>
+    <color name="light_grey">#e6e3e3</color>
+
+    <!---Login -->
+
+    <color name="primary">#E43F3F</color>
+    <color name="primary_dark">#E12929</color>
+    <color name="primary_darker">#CC1D1D</color>
+    <color name="accent">#161616</color>
+
+    <color name="black">#000000</color>
+    <color name="jet">#bbb</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Intro -->
+    <color name="light_green">#3eb74e</color>
+    <color name="light_purple">#8c61b3</color>
+    <color name="light_orange">#ffb500</color>
+    <color name="light_cyan">#00BCD4</color>
+    <!-- End Intro-->
+
+</resources>
