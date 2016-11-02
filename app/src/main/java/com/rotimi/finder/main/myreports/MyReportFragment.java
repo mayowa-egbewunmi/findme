@@ -1,21 +1,16 @@
 package com.rotimi.finder.main.myreports;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,7 +18,7 @@ import android.widget.LinearLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
-import com.rotimi.finder.db.FindMeDatabase;
+import com.rotimi.finder.api.FindMeDatabase;
 import com.rotimi.finder.main.publicreports.ReportFragment;
 import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
@@ -38,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyReportFragment extends Fragment implements FindMeDatabase.OnReportUpdatedListener{
+public class MyReportFragment extends Fragment{
 
 
     private static final String LOG = ReportFragment.class.getName();
@@ -67,19 +62,13 @@ public class MyReportFragment extends Fragment implements FindMeDatabase.OnRepor
 
         ButterKnife.bind(this, view);
         utils = new Utility(getActivity());
-
-        //runSetUp
-
         myreports = new ArrayList<>(); //TODO: Do your API request here
-        for(int i = 0; i < 6; i++){
-            myreports.add(new ReportItem());
-        }
-
-        showEmptyState();
 
         myreportsAdapter = new MyReportAdapter(getActivity(), myreports);
         myReportRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myReportRecyclerView.setAdapter(myreportsAdapter);
+
+        runSetUp();
 
         myReportRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), myReportRecyclerView, new IClickListener() {
 
@@ -109,10 +98,9 @@ public class MyReportFragment extends Fragment implements FindMeDatabase.OnRepor
     }
 
     public void runSetUp(){
-        myreports = new ArrayList<>(); //GET reports here
+        //TODO:any means to get data?
         myreportsAdapter.setData(myreports);
         myreportsAdapter.notifyDataSetChanged();
-
         showEmptyState();
     }
 
@@ -151,17 +139,5 @@ public class MyReportFragment extends Fragment implements FindMeDatabase.OnRepor
                 break;
             }
         }
-    }
-
-    @Override
-    public void reportUpdated(DataSnapshot dataSnapshot) {
-        myreports.clear();
-        Iterator<DataSnapshot> reportItems = dataSnapshot.getChildren().iterator();
-        while (reportItems.hasNext()){
-            //TODO: Filter out my reports
-            DataSnapshot ds = reportItems.next();
-            myreports.add((ReportItem) ds.getValue());
-        }
-        runSetUp();
     }
 }

@@ -1,11 +1,13 @@
 package com.rotimi.finder.main.sightings;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
-import com.rotimi.finder.db.FindMeDatabase;
+import com.rotimi.finder.api.FindMeDatabase;
+import com.rotimi.finder.api.Storage;
 import com.rotimi.finder.main.DialogListener;
 import com.rotimi.finder.main.UserDialog;
 import com.rotimi.finder.util.Constants;
@@ -33,9 +39,10 @@ import com.rotimi.finder.util.Utility;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -43,6 +50,7 @@ import butterknife.ButterKnife;
 
 public class SightingCreateFragment extends Fragment implements DialogListener{
 
+    private static final String TAG = SightingCreateFragment.class.getSimpleName();
     private Utility utility;
     private SystemData systemData;
 
@@ -59,7 +67,11 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
     private Uri imagePath;
     private Bitmap profilePicture;
 
-    private String reportKey;
+    private FindMeDatabase findMeDatabase;
+    private Storage storage;
+
+    private String reportId;
+    private ProgressDialog progressDialog;
 
     public static SightingCreateFragment newInstance(String param1, String param2) {
         SightingCreateFragment fragment = new SightingCreateFragment();
@@ -86,14 +98,20 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
         utility = new Utility(getActivity());
         systemData = new SystemData(getActivity());
 
-        sightingItem = new SightingItem();
+        findMeDatabase = new FindMeDatabase(getActivity());
+        storage = new Storage();
 
+        sightingItem = new SightingItem();
         uploadPictureView.setOnClickListener(v -> showFileChooser());
 
         uploadView.setOnClickListener(v -> {
             if(validate()){
                 if(utility.isRegistered()){
-                    uploadSighting();
+                    if(utility.isConnected()) {
+                        startUploading(getPath(imagePath));
+                    }else{
+                        Toasteroid.show(getActivity(), R.string.connection_error, Toasteroid.STYLES.ERROR);
+                    }
                 }else{
                     //Show dialog to register user
                     FragmentManager fragmentManager = getChildFragmentManager();
@@ -128,20 +146,45 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
         return valid;
     }
 
-    public void setValue() {
+    public void submitReport(){
+
         sightingItem.id = UUID.randomUUID().toString();
         sightingItem.location = location;
         sightingItem.comment = comment;
         sightingItem.imageUrl = imageUrl;
+        sightingItem.report_id = reportId;
+        findMeDatabase.dbRef.child(Constants.REPORTS).child(sightingItem.id).setValue(sightingItem);
     }
 
-    public void submitReport(){
-        setValue();
-        String key = FindMeDatabase.dbRef.child(Constants.REPORTS).child(reportKey).child(Constants.SIGHTINGS).push().getKey();
-        Map<String, Object> childUpdate = new HashMap<>();
-        childUpdate.put("/reports/"+reportKey+"/sightings/"+key, sightingItem);
+    public void startUploading(String filePath){
+        showProgress();
+        progressDialog.setMessage(getString(R.string.uploading_picture));
+        String name = filePath.substring(filePath.lastIndexOf("/"));
 
-        FindMeDatabase.dbRef.updateChildren(childUpdate);
+        Log.d(TAG, name+" ===== ");
+        StorageReference mountainsRef = storage.storageReference.child(name);
+
+        try {
+            InputStream stream = new FileInputStream(new File(filePath));
+
+            UploadTask uploadTask = mountainsRef.putStream(stream);
+            uploadTask.addOnFailureListener(exception -> {
+                // Handle unsuccessful uploads
+                Toasteroid.show(getActivity(), R.string.failed, Toasteroid.STYLES.ERROR);
+                exception.printStackTrace();
+
+            }).addOnSuccessListener(taskSnapshot -> {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                Log.d(TAG, downloadUrl.getPath());
+                progressDialog.setMessage(getString(R.string.sending_report));
+
+                imageUrl = downloadUrl.getPath();
+                new Async().execute();
+            });
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void uploadSighting(){
@@ -238,6 +281,29 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
     public void onReturn(String tag) {
         if(tag == UserDialog.TAG){
             uploadSighting();
+        }
+    }
+
+    public void showProgress(){
+        progressDialog = new ProgressDialog(getActivity(), R.style.AppTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(getString(R.string.wait));
+        progressDialog.show();
+    }
+
+    private class Async extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            submitReport();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            Toasteroid.show(getActivity(), R.string.success_create_more, Toasteroid.STYLES.SUCCESS);
         }
     }
 

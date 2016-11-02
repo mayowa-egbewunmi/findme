@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.rotimi.finder.R;
 import com.rotimi.finder.main.ReportDetails;
 import com.rotimi.finder.main.publicreports.ReportItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,6 +47,17 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
         ReportItem foundItem = foundItems.get(position);
+
+        holder.ageView.setText(foundItem.age);
+        holder.nameView.setText(foundItem.name);
+        holder.sexView.setText(foundItem.sex);
+        holder.complexionView.setText(foundItem.complexion);
+        Picasso.with(context).load(foundItem.imageUrl)
+                .placeholder(R.drawable.empty_profile2)
+                .centerCrop()
+                .error(R.drawable.empty_profile2)
+                .into(holder.imgView);
+
         holder.frameView.setOnClickListener(v -> { context.startActivity(new Intent(context, ReportDetails.class));
         });
     }
@@ -64,8 +76,9 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
         @BindView(R.id.found_age) TextView ageView;
         @BindView(R.id.found_img) ImageView imgView;
         @BindView(R.id.found_name) TextView nameView;
-        @BindView(R.id.found_location) TextView locationView;
-        @BindView(R.id.found_date) TextView dateView;
+        @BindView(R.id.found_sex) TextView sexView;
+        @BindView(R.id.found_complexion) TextView complexionView;
+
         @BindView(R.id.found_frame) RelativeLayout frameView;
         public MenuViewHolder(View itemView) {
             super(itemView);

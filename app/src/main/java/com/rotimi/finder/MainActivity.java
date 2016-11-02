@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.rotimi.finder.db.DbInit;
 import com.rotimi.finder.main.BaseController;
 
 import butterknife.ButterKnife;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.setDebug(true);
         ButterKnife.bind(this);
+
+        new DbInit(this); //set up tables
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();

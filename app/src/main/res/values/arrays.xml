@@ -34,4 +34,11 @@
         <item>@string/social_network_hint</item>
 
     </string-array>
+    <string-array name="state_pros">
+        <item>FORCE PUBLIC RELATION OFFICER FHQ ABUJA : 09059202456</item>
+        <item>ZONE 1 KANO : 07035703380 </item>
+        <item>ZONE 2 LAGOS : 08037168147 </item>
+        <item>ZONE 5 BENIN : 080371681147 </item>
+        <item>ZONE 6 CALABAR : 08037446138 </item>
+    </string-array>
 </resources>

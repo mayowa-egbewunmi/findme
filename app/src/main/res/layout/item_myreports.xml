@@ -52,12 +52,12 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/myreports.when"
+            android:id="@+id/myreports._sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/when_last_seen"
+            android:text="@string/sex"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/myreports.name"
             android:layout_toRightOf="@+id/myreports.img"
@@ -68,13 +68,13 @@
 
 
         <TextView
-            android:id="@+id/myreports.when_last_seen"
+            android:id="@+id/myreports.sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/lastseen_value"
-            android:layout_below="@+id/myreports.when"
+            android:text="@string/sex_female"
+            android:layout_below="@+id/myreports._sex"
             android:layout_toRightOf="@id/myreports.img"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="2dp"
@@ -84,12 +84,12 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/myreports.where"
+            android:id="@+id/myreports._complexion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/where_last_seen"
+            android:text="@string/complexion"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/myreports.name"
             android:layout_alignParentRight="true"
@@ -99,13 +99,13 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/myreports.where_last_seen"
+            android:id="@+id/myreports.complexion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/when_value"
-            android:layout_below="@+id/myreports.where"
+            android:text="@string/complexion_brown"
+            android:layout_below="@+id/myreports._complexion"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="5dp"
             android:layout_alignParentRight="true"

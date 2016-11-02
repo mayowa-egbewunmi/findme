@@ -1,21 +1,15 @@
 package com.rotimi.finder.main.found;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,8 +17,7 @@ import android.widget.LinearLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
-import com.rotimi.finder.db.FindMeDatabase;
-import com.rotimi.finder.main.publicreports.ReportFragment;
+import com.rotimi.finder.api.FindMeDatabase;
 import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
@@ -38,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoundFragment extends Fragment implements FindMeDatabase.OnReportUpdatedListener{
+public class FoundFragment extends Fragment{
     private static final String LOG = FoundFragment.class.getName();
     private List<ReportItem> found;
     private FoundAdapter foundAdapter;
@@ -66,15 +59,11 @@ public class FoundFragment extends Fragment implements FindMeDatabase.OnReportUp
         utils = new Utility(getActivity());
 
         found = new ArrayList<>(); //TODO: Do your API request here
-        for(int i = 0; i < 6; i++){
-            found.add(new ReportItem());
-        }
-
-        showEmptyState();
-
         foundAdapter = new FoundAdapter(getActivity(), found);
         foundRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         foundRecyclerView.setAdapter(foundAdapter);
+
+        runSetUp();
 
         foundRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), foundRecyclerView, new IClickListener() {
 
@@ -100,7 +89,7 @@ public class FoundFragment extends Fragment implements FindMeDatabase.OnReportUp
     }
 
     public void runSetUp(){
-        found = new ArrayList<>(); //GET reports here
+        //TODO: any means to get data
         foundAdapter.setData(found);
         foundAdapter.notifyDataSetChanged();
 
@@ -142,19 +131,5 @@ public class FoundFragment extends Fragment implements FindMeDatabase.OnReportUp
                 break;
             }
         }
-    }
-    @Override
-    public void reportUpdated(DataSnapshot dataSnapshot) {
-        found.clear();
-        Iterator<DataSnapshot> reportItems = dataSnapshot.getChildren().iterator();
-
-        while (reportItems.hasNext()){
-
-            //TODO: Filter out founds
-
-            DataSnapshot ds = reportItems.next();
-            found.add((ReportItem) ds.getValue());
-        }
-        runSetUp();
     }
 }

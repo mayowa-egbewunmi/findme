@@ -1,14 +1,11 @@
 package com.rotimi.finder.main.publicreports;
+import java.io.Serializable;
 
-import com.rotimi.finder.main.sightings.SightingItem;
-import com.rotimi.finder.util.SystemData;
-
-import java.util.List;
 
 /**
  * Created by mayowa on 7/23/16.
  */
-public class ReportItem {
+public class ReportItem implements Serializable {
 
     public String name;
     public String comment;
@@ -20,14 +17,10 @@ public class ReportItem {
     public String type;
     public String imageUrl;
     public String id;
-
     public String found = "0";
     public String mobile_number;
+    public String found_location;
+    public String found_date;
 
-    public ReportItem(){
-
-    }
-
-    public List<SightingItem> sightings;
-
+    public ReportItem(){}
 }

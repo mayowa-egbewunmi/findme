@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.rotimi.finder.R;
 import com.rotimi.finder.main.ReportDetails;
 import com.rotimi.finder.main.publicreports.ReportItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,7 +45,17 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
 
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
-        ReportItem myReportItem = myReportItems.get(position);
+        ReportItem reportItem = myReportItems.get(position);
+        holder.ageView.setText(reportItem.age);
+        holder.nameView.setText(reportItem.name);
+        holder.sexView.setText(reportItem.sex);
+        holder.complexionView.setText(reportItem.complexion);
+        Picasso.with(context).load(reportItem.imageUrl)
+                .placeholder(R.drawable.empty_profile2)
+                .centerCrop()
+                .error(R.drawable.empty_profile2)
+                .into(holder.imgView);
+
         holder.frameView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReportDetails.class);
             context.startActivity(intent);
@@ -65,8 +76,8 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
         @BindView(R.id.myreports_age) TextView ageView;
         @BindView(R.id.myreports_img) ImageView imgView;
         @BindView(R.id.myreports_name) TextView nameView;
-        @BindView(R.id.myreports_when_last_seen) TextView whenView;
-        @BindView(R.id.myreports_where_last_seen) TextView whereView;
+        @BindView(R.id.myreports_sex) TextView sexView;
+        @BindView(R.id.myreports_complexion) TextView complexionView;
         @BindView(R.id.myreports_frame)
         RelativeLayout frameView;
         public MenuViewHolder(View itemView) {

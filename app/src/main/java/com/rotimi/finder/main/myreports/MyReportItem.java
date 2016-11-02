@@ -22,8 +22,6 @@ public class MyReportItem {
     public String imageUrl;
     public String id;
 
-    public List<SightingItem> sightings;
-
     public MyReportItem(){}
 
 }

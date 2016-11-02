@@ -156,4 +156,9 @@
     <string name="empty_error">Field cannot be empty</string>
     <string name="picture_not_loaded">You have not uploaded picture</string>
     <string name="storage_permitted">Now you can upload profile picture</string>
+    <string name="failed">An error ocurred. Kindly check your connection</string>
+    <string name="connection_error">Internet connection error.</string>
+    <string name="wait">Please wait...</string>
+    <string name="uploading_picture">Uploading picture...</string>
+    <string name="sending_report">Sending report...</string>
 </resources>

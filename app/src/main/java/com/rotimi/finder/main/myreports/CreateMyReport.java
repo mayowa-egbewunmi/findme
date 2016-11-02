@@ -1,11 +1,13 @@
 package com.rotimi.finder.main.myreports;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -14,39 +16,34 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
-import com.rotimi.finder.db.FindMeDatabase;
-import com.rotimi.finder.db.Storage;
+import com.rotimi.finder.api.FindMeDatabase;
+import com.rotimi.finder.api.Storage;
 import com.rotimi.finder.main.DialogListener;
 import com.rotimi.finder.main.UserDialog;
+import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.SystemData;
 import com.rotimi.finder.util.Utility;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -57,7 +54,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     public final static String MENU_ID = "menu_id";
 
     private Utility utility;
-    private SystemData systemData;
 
     @BindView(R.id.myreport_age) TextView ageView;
     @BindView(R.id.myreport_comment) TextView commentView;
@@ -67,9 +63,9 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     @BindView(R.id.myreport_complexion) RadioGroup complexionGroupView;
     @BindView(R.id.myreport_sex) RadioGroup sexGroupView;
     @BindView(R.id.myreport_type) RadioGroup typeGroupView;
-    @BindViews({R.id.myreport_height}) TextView heightView;
+    @BindView(R.id.myreport_height) TextView heightView;
     @BindView(R.id.myreport_picture) ImageView pictureView;
-    @BindView(R.id.myreport_police_station) TextView policeView;
+    @BindView(R.id.myreport_police_station) Spinner policeView;
     @BindView(R.id.myreport_name) TextView nameView;
     @BindView(R.id.myreport_upload_picture) TextView uploadPictureView;
     @BindView(R.id.myreport_upload) TextView uploadView;
@@ -80,7 +76,12 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     private boolean pictureUploaded = false;
     private Uri imagePath;
     private Bitmap profilePicture;
-    private MyReportItem myReportItem;
+    private ReportItem myReportItem;
+
+    private Storage storage;
+    private FindMeDatabase findmeDatabase;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +92,32 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
 
         ButterKnife.bind(this);
         utility = new Utility(this);
-        systemData = new SystemData(this);
-        myReportItem = new MyReportItem();
+        myReportItem = new ReportItem();
+
+        storage = new Storage();
+        findmeDatabase = new FindMeDatabase(this);
+
+        // Create an ArrayAdapter using the string array and a default spinner
+        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter.createFromResource(this, R.array.state_pros, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        policeView.setAdapter(staticAdapter);
+
+        policeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                police = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
 
         sexGroupView.setOnCheckedChangeListener((group, checkedId) -> {
             if(checkedId == R.id.myreport_sex_female){
@@ -130,7 +155,11 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         uploadView.setOnClickListener(v -> {
             if(validate()){
                 if(utility.isRegistered()){
-                    uploadReport();
+                    if(utility.isConnected()) {
+                        startUploading(getPath(imagePath));
+                    }else{
+                        Toasteroid.show(this, R.string.connection_error, Toasteroid.STYLES.ERROR);
+                    }
                 }else{
                     //Show dialog to register user
                     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -145,7 +174,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
 
         name = nameView.getText().toString().trim();
         comment = commentView.getText().toString().trim();
-        police = policeView.getText().toString().trim();
         age = ageView.getText().toString().trim();
         height = heightView.getText().toString().trim();
 
@@ -155,12 +183,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         } else {
             nameView.setError(null);
         }
-        if(police.isEmpty()){
-            policeView.setError(getString(R.string.empty_error));
-            valid = false;
-        }else{
-            policeView.setError(null);
-        }
+
         if(age.isEmpty()){
             ageView.setError(getString(R.string.empty_error));
             valid = false;
@@ -179,12 +202,15 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         }
         return valid;
     }
-
-    public void handleSubmit(View v){
-        Toasteroid.show(this, R.string.success_create_more, Toasteroid.STYLES.SUCCESS);
+    public void showProgress(){
+        progressDialog = new ProgressDialog(this,
+                R.style.AppTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(getString(R.string.wait));
+        progressDialog.show();
     }
 
-    public void setValue() {
+    public void submitReport(){
         myReportItem.name = name;
         myReportItem.age = age;
         myReportItem.comment = comment;
@@ -194,64 +220,45 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         myReportItem.police = police;
         myReportItem.sex = sex;
         myReportItem.type = type;
+        myReportItem.mobile_number = new SystemData(this).getString(Constants.PHONE);
         myReportItem.id = UUID.randomUUID().toString();
+
+        findmeDatabase.dbRef.child(Constants.REPORTS).child(myReportItem.id).setValue(myReportItem);
+
+//        String key = FindMeDatabase.dbRef.child(Constants.REPORTS).push().getKey();
+//        Map<String, Object> childUpdate = new HashMap<>();
+//        childUpdate.put("/reports/"+key, myReportItem);
+//        FindMeDatabase.dbRef.updateChildren(childUpdate);
     }
 
-    public void submitReport(){
-        setValue();
-        String key = FindMeDatabase.dbRef.child(Constants.REPORTS).push().getKey();
+    public void startUploading(String filePath){
+        showProgress();
+        progressDialog.setMessage(getString(R.string.uploading_picture));
+        String name = filePath.substring(filePath.lastIndexOf("/"));
 
-        //FindMeDatabase.dbRef.child(Constants.REPORTS).push().setValue(myReportItem);
-
-        Map<String, Object> childUpdate = new HashMap<>();
-        childUpdate.put("/reports/"+key, myReportItem);
-
-        FindMeDatabase.dbRef.updateChildren(childUpdate);
-    }
-
-    public void uploadImage(String name, String filePath){
-
-        // Create a reference to "mountains.jpg"
-        StorageReference mountainsRef = Storage.storageReference.child(name);
+        Log.d(TAG, name+" ===== ");
+        StorageReference mountainsRef = storage.storageReference.child(name);
 
         try {
             InputStream stream = new FileInputStream(new File(filePath));
 
             UploadTask uploadTask = mountainsRef.putStream(stream);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                }
+            uploadTask.addOnFailureListener(exception -> {
+                // Handle unsuccessful uploads
+                Toasteroid.show(CreateMyReport.this, R.string.failed, Toasteroid.STYLES.ERROR);
+                exception.printStackTrace();
+
+            }).addOnSuccessListener(taskSnapshot -> {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                Log.d(TAG, downloadUrl.getPath());
+                progressDialog.setMessage(getString(R.string.sending_report));
+
+                imageUrl = downloadUrl.getPath();
+                new Async().execute();
             });
         }catch (IOException e){
-
-        }
-    }
-
-    private void uploadReport(){
-
-        //getting the actual path of the image
-        String path = getPath(imagePath);
-        try {
-            String uploadId = UUID.randomUUID().toString();
-
-            //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, Constants.END_POINT+"teacher")
-                    .addFileToUpload(path, Constants.FILE) //Adding file
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
-
-        } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -267,7 +274,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
             ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE }, Constants.MY_PERMISSIONS_REQUEST);
             return;
         }
-
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -297,9 +303,9 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == this.RESULT_OK && data != null && data.getData() != null) {
             imagePath = data.getData();
             try {
+                pictureUploaded = true;
                 profilePicture = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
                 pictureView.setImageBitmap(profilePicture);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -329,7 +335,27 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     public void onReturn(String tag) {
 
         if(tag == UserDialog.TAG){
-            uploadReport();
+            if(utility.isConnected()) {
+                startUploading(getPath(imagePath));
+            }else{
+                Toasteroid.show(this, R.string.connection_error, Toasteroid.STYLES.ERROR);
+            }
+        }
+    }
+
+    private class Async extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            submitReport();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            Toasteroid.show(CreateMyReport.this, R.string.success_create_more, Toasteroid.STYLES.SUCCESS);
         }
     }
 }

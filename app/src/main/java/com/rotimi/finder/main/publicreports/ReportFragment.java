@@ -1,24 +1,15 @@
 package com.rotimi.finder.main.publicreports;
 
-import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -26,7 +17,7 @@ import android.widget.LinearLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
-import com.rotimi.finder.db.FindMeDatabase;
+import com.rotimi.finder.api.FindMeDatabase;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
@@ -37,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReportFragment extends Fragment implements FindMeDatabase.OnReportUpdatedListener {
+public class ReportFragment extends Fragment {
 
     private static final String LOG = ReportFragment.class.getName();
     private List<ReportItem> reports;
@@ -66,20 +57,16 @@ public class ReportFragment extends Fragment implements FindMeDatabase.OnReportU
         utils = new Utility(getActivity());
 
         reports = new ArrayList<>(); //TODO: Do your API request here
-        for(int i = 0; i < 6; i++){
-            reports.add(new ReportItem());
-        }
-        showEmptyState();
         reportAdapter = new ReportAdapter(getActivity(), reports);
-
         reportsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         reportsRecyclerView.setAdapter(reportAdapter);
+
+        runSetUp();
 
         reportsRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), reportsRecyclerView, new IClickListener() {
 
             @Override
             public void onClick(View view, int position) {
-                ReportItem reportItem = reports.get(position);
                 //TODO: show reports details
             }
 
@@ -88,10 +75,6 @@ public class ReportFragment extends Fragment implements FindMeDatabase.OnReportU
 
             }
         }));
-    }
-
-    public ArrayList<ReportItem> getAllReports(){
-        return null;
     }
 
 //    @Override
@@ -131,10 +114,9 @@ public class ReportFragment extends Fragment implements FindMeDatabase.OnReportU
     }
 
     public void runSetUp(){
-        reports = new ArrayList<>(); //GET reports here
+        //TODO? any means to get data via api?
         reportAdapter.setData(reports);
         reportAdapter.notifyDataSetChanged();
-
         showEmptyState();
     }
 
@@ -176,18 +158,6 @@ public class ReportFragment extends Fragment implements FindMeDatabase.OnReportU
                 break;
             }
         }
-    }
-
-    @Override
-    public void reportUpdated(DataSnapshot dataSnapshot) {
-        reports.clear();
-        Iterator<DataSnapshot> reportItems = dataSnapshot.getChildren().iterator();
-
-        while (reportItems.hasNext()){
-            DataSnapshot ds = reportItems.next();
-            reports.add((ReportItem) ds.getValue());
-        }
-        runSetUp();
     }
 
 //    public void uploadBulkMenu(String filePath){

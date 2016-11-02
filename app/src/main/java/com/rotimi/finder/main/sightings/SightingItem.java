@@ -11,8 +11,7 @@ public class SightingItem {
     public String comment;
     public String imageUrl;
     public String id;
-
-    public List<SightingItem> sightings;
+    public String report_id;
 
     public SightingItem(){}
 

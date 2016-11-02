@@ -54,12 +54,12 @@
             android:src="@drawable/profile_pix"/>
 
         <TextView
-            android:id="@+id/found.where"
+            android:id="@+id/found._sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/where"
+            android:text="@string/sex"
             android:layout_below="@+id/found.img"
             android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
@@ -69,13 +69,13 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/found.location"
+            android:id="@+id/found.sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/sample_location"
-            android:layout_below="@+id/found.where"
+            android:text="@string/sex_male"
+            android:layout_below="@+id/found._sex"
             android:layout_marginTop="5dp"
             android:textColor="@color/colorPrimary"
             android:maxLines="1"
@@ -84,7 +84,7 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/found._date"
+            android:id="@+id/found._complexion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
@@ -99,13 +99,13 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/found.date"
+            android:id="@+id/found.complexion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/sample_date"
-            android:layout_below="@+id/found._date"
+            android:text="@string/complexion_brown"
+            android:layout_below="@+id/found._complexion"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_alignParentRight="true"

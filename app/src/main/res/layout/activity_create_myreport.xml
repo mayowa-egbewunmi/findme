@@ -9,15 +9,13 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/MyMaterialTheme.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/MyMaterialTheme.PopupOverlay" />
+            android:background="?attr/colorPrimary" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -175,15 +173,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/myreport.police_station"
-                android:textSize="12dp"
-                android:drawableBottom="@color/black_overlay"
-                android:layout_marginBottom="10dp"
-                android:inputType="text"
-                android:hint="@string/enter_nearest_police_station"
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp" />
+
+            <!--<EditText-->
+                <!--android:id="@+id/myreport.police_station"-->
+                <!--android:textSize="12dp"-->
+                <!--android:drawableBottom="@color/black_overlay"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:inputType="text"-->
+                <!--android:hint="@string/enter_nearest_police_station"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp" />-->
 
             <TextView
                 android:id="@+id/myreport.upload.picture"

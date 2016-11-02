@@ -36,4 +36,9 @@ public class Constants {
     public static final String SIGHTINGS = "sightings";
     public static final String STORAGE_URL = "gs://findme-96ebd.appspot.com";
     public static final String REPORT_UPDATED = "report_updated";
+    public static final String REPORT = "report";
+    public static final String REPORT_ID = "report_id";
+    public static final String SNAPSHOT = "SNAP_SHOT";
+
+    public static final String SIGHTING_UPDATED = "sighting_updated";
 }
