@@ -164,4 +164,5 @@
     <string name="sex_not_selected">Choose a sex</string>
     <string name="type_not_selected">Type not selected</string>
     <string name="complexion_not_selected">Complexion not selected</string>
+    <string name="to_notify">You will be notified when upload is completed!. Thanks for the sighting</string>
 </resources>

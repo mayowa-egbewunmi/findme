@@ -78,7 +78,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     private Uri imagePath;
     private Bitmap profilePicture;
     private ReportItem myReportItem;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,13 +207,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         }
         return valid;
     }
-    public void showProgress(){
-        progressDialog = new ProgressDialog(this,
-                R.style.AppTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getString(R.string.wait));
-        progressDialog.show();
-    }
 
     public void submitReport(){
         myReportItem.name = name;
@@ -238,8 +230,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     }
 
     public void startUploading(String filePath){
-        showProgress();
-        progressDialog.setMessage(getString(R.string.uploading_picture));
+        Toasteroid.show(this, getString(R.string.to_notify), Toasteroid.STYLES.INFO);
         String name = filePath.substring(filePath.lastIndexOf("/"));
 
         Log.d(TAG, name+" ===== ");
@@ -257,7 +248,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
             }).addOnSuccessListener(taskSnapshot -> {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                progressDialog.setMessage(getString(R.string.sending_report));
 
                 //HACK
                 imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/")-1)
@@ -364,7 +354,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
             Toasteroid.show(CreateMyReport.this, R.string.success, Toasteroid.STYLES.SUCCESS);
         }
     }

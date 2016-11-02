@@ -69,7 +69,6 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
     private Bitmap profilePicture;
 
     private String reportId;
-    private ProgressDialog progressDialog;
 
     public static SightingCreateFragment newInstance(String reportId) {
         Bundle bundle = new Bundle();
@@ -158,8 +157,7 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
     }
 
     public void startUploading(String filePath){
-        showProgress();
-        progressDialog.setMessage(getString(R.string.uploading_picture));
+        Toasteroid.show(getActivity(), getString(R.string.to_notify), Toasteroid.STYLES.INFO);
         String name = filePath.substring(filePath.lastIndexOf("/"));
 
         Log.d(TAG, name+" ===== ");
@@ -178,7 +176,6 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 Log.d(TAG, downloadUrl.getPath());
-                progressDialog.setMessage(getString(R.string.sending_report));
                 //HACK
                 imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/")-1)
                         +"%2F"+downloadUrl.getPath().substring(downloadUrl.getPath().lastIndexOf("/")+1)+"?"+downloadUrl.getQuery();
@@ -189,26 +186,6 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
             e.printStackTrace();
         }
     }
-
-    private void uploadSighting(){
-        //getting the actual path of the image
-        String path = getPath(imagePath);
-        try {
-            String uploadId = UUID.randomUUID().toString();
-
-            //Creating a multi part request
-            new MultipartUploadRequest(getActivity(), uploadId, Constants.END_POINT+"teacher")
-                    .addFileToUpload(path, Constants.FILE) //Adding file
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     //method to show file chooser
     private void showFileChooser() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -290,14 +267,6 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
             }
         }
     }
-
-    public void showProgress(){
-        progressDialog = new ProgressDialog(getActivity(), R.style.AppTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getString(R.string.wait));
-        progressDialog.show();
-    }
-
     private class Async extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -309,7 +278,6 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
             Toasteroid.show(getActivity(), R.string.success, Toasteroid.STYLES.SUCCESS);
         }
     }
