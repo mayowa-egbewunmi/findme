@@ -118,7 +118,7 @@ public class ReportFragment extends Fragment {
     }
 
     public void runSetUp(){
-        reports = SQLite.select().from(Reports.class).where(Reports_Table.found.eq("0")).queryList();
+        reports = SQLite.select().from(Reports.class).where(Reports_Table.found.eq("0")).orderBy(Reports_Table._id, false).queryList();
         if(reports!=null) {
             reportAdapter.setData(reports);
             reportAdapter.notifyDataSetChanged();

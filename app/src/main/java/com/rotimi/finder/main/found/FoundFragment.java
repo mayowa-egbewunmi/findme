@@ -100,7 +100,7 @@ public class FoundFragment extends Fragment{
     }
 
     public void runSetUp(){
-        found =  SQLite.select().from(Reports.class).where(Reports_Table.found.eq("1")).queryList();
+        found =  SQLite.select().from(Reports.class).where(Reports_Table.found.eq("1")).orderBy(Reports_Table._id, false).queryList();
         if(found!=null) {
             foundAdapter.setData(found);
             foundAdapter.notifyDataSetChanged();

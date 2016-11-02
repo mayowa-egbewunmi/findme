@@ -53,7 +53,7 @@ public class SightingAdapter extends RecyclerView.Adapter<SightingAdapter.MenuVi
         holder.dateView.setText(sightingItem.created_at);
 
         Picasso.with(context)
-                .load(Constants.BASE_STORAGE + sightingItem.imageUrl)
+                .load(sightingItem.imageUrl)
                 .placeholder(R.drawable.empty_profile2)
                 .error(R.drawable.empty_profile2)
                 .into(holder.imgView);

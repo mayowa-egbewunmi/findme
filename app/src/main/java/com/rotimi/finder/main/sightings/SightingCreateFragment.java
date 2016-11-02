@@ -1,7 +1,6 @@
 package com.rotimi.finder.main.sightings;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -22,23 +21,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.MainActivity;
 import com.rotimi.finder.R;
-import com.rotimi.finder.api.FindMeDatabase;
-import com.rotimi.finder.api.Storage;
 import com.rotimi.finder.main.DialogListener;
 import com.rotimi.finder.main.UserDialog;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.SystemData;
 import com.rotimi.finder.util.Utility;
-
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -144,7 +137,7 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
         return valid;
     }
 
-    public void submitReport(){
+    public void submitSightings(){
 
         sightingItem.id = UUID.randomUUID().toString();
         sightingItem.location = location;
@@ -153,7 +146,7 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
         sightingItem.report_id = reportId;
         sightingItem.date = Utility.getCurrentDate(false);
 
-        MainActivity.findMeDatabase.dbRef.child(Constants.REPORTS).child(sightingItem.id).setValue(sightingItem);
+        MainActivity.findMeDatabase.dbRef.child(Constants.SIGHTINGS).child(sightingItem.id).setValue(sightingItem);
     }
 
     public void startUploading(String filePath){
@@ -169,6 +162,7 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
             UploadTask uploadTask = mountainsRef.putStream(stream);
             uploadTask.addOnFailureListener(exception -> {
                 // Handle unsuccessful uploads
+                if(getActivity()!=null)
                 Toasteroid.show(getActivity(), R.string.failed, Toasteroid.STYLES.ERROR);
                 exception.printStackTrace();
 
@@ -177,7 +171,7 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 Log.d(TAG, downloadUrl.getPath());
                 //HACK
-                imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/")-1)
+                imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/"))
                         +"%2F"+downloadUrl.getPath().substring(downloadUrl.getPath().lastIndexOf("/")+1)+"?"+downloadUrl.getQuery();
 
                 new Async().execute();
@@ -214,9 +208,11 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
             //If permission is granted
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Displaying a toast
+                if(getActivity()!=null)
                 Toasteroid.show(getActivity(), R.string.storage_permitted, Toasteroid.STYLES.SUCCESS);
             } else {
                 //Displaying another toast if permission is not granted
+                if(getActivity()!=null)
                 Toasteroid.show(getActivity(), R.string.no_permission, Toasteroid.STYLES.ERROR);
             }
         }
@@ -263,6 +259,7 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
             if(utility.isConnected()) {
                 startUploading(getPath(imagePath));
             }else{
+                if(getActivity()!=null)
                 Toasteroid.show(getActivity(), R.string.connection_error, Toasteroid.STYLES.ERROR);
             }
         }
@@ -271,13 +268,14 @@ public class SightingCreateFragment extends Fragment implements DialogListener{
 
         @Override
         protected Void doInBackground(Void... params) {
-            submitReport();
+            submitSightings();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if(getActivity()!=null)
             Toasteroid.show(getActivity(), R.string.success, Toasteroid.STYLES.SUCCESS);
         }
     }

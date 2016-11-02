@@ -230,7 +230,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     }
 
     public void startUploading(String filePath){
-        Toasteroid.show(this, getString(R.string.to_notify), Toasteroid.STYLES.INFO);
+        Toasteroid.show(this, getString(R.string.to_notify_report), Toasteroid.STYLES.INFO);
         String name = filePath.substring(filePath.lastIndexOf("/"));
 
         Log.d(TAG, name+" ===== ");
@@ -242,6 +242,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
             UploadTask uploadTask = mountainsRef.putStream(stream);
             uploadTask.addOnFailureListener(exception -> {
                 // Handle unsuccessful uploads
+                if(CreateMyReport.this!=null)
                 Toasteroid.show(CreateMyReport.this, R.string.failed, Toasteroid.STYLES.ERROR);
                 exception.printStackTrace();
 
@@ -250,7 +251,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                 //HACK
-                imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/")-1)
+                imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/"))
                         +"%2F"+downloadUrl.getPath().substring(downloadUrl.getPath().lastIndexOf("/")+1)+"?"+downloadUrl.getQuery();
 
                 Log.d(TAG, imageUrl);
@@ -354,9 +355,9 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if(CreateMyReport.this!=null)
             Toasteroid.show(CreateMyReport.this, R.string.success, Toasteroid.STYLES.SUCCESS);
         }
     }
-
 }
 

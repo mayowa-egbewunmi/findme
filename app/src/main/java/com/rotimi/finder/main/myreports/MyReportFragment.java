@@ -17,24 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
-import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rotimi.finder.R;
-import com.rotimi.finder.api.FindMeDatabase;
 import com.rotimi.finder.db.Reports;
 import com.rotimi.finder.db.Reports_Table;
 import com.rotimi.finder.main.publicreports.ReportFragment;
-import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
 import com.rotimi.finder.util.SystemData;
 import com.rotimi.finder.util.Utility;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -111,7 +105,7 @@ public class MyReportFragment extends Fragment{
 
     public void runSetUp(){
         String num = new SystemData(getActivity()).getString(Constants.PHONE);
-        myreports = SQLite.select().from(Reports.class).where(Reports_Table.mobile_number.eq(num)).queryList();
+        myreports = SQLite.select().from(Reports.class).where(Reports_Table.mobile_number.eq(num)).orderBy(Reports_Table._id, false).queryList();
         if(myreports!=null) {
             myreportsAdapter.setData(myreports);
             myreportsAdapter.notifyDataSetChanged();

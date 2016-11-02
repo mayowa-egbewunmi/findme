@@ -165,4 +165,5 @@
     <string name="type_not_selected">Type not selected</string>
     <string name="complexion_not_selected">Complexion not selected</string>
     <string name="to_notify">You will be notified when upload is completed!. Thanks for the sighting</string>
+    <string name="to_notify_report">You will be notified when upload is completed!. Thanks for the reporting</string>
 </resources>

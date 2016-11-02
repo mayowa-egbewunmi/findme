@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.marcohc.toasteroid.Toasteroid;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -51,7 +52,6 @@ public class SightingListFragment extends Fragment {
 
     @BindView(R.id.sightings_recycler_view) RecyclerView sightingsRecyclerView;
     @BindView(R.id.sightings_empty) LinearLayout emptyView;
-    @BindView(R.id.sightings_card_frame) CardView frameView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,33 +102,6 @@ public class SightingListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.upload: {
-                try {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Constants.MY_PERMISSIONS_REQUEST);
-                        return true;
-                    }
-                    //TODO: Do action here when permission is granted
-                    //uploadBulkMenu("");//TODO remove this
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         getActivity().registerReceiver(sightingReceiver, new IntentFilter(Constants.SIGHTING_UPDATED));
@@ -142,7 +115,10 @@ public class SightingListFragment extends Fragment {
     }
 
     public void runSetUp(){
-        sightings = SQLite.select().from(Sightings.class).where(Sightings_Table.report_id.eq(reportID)).queryList();
+        Toast.makeText(getActivity(), reportID, Toast.LENGTH_LONG).show();
+        sightings = SQLite.select().from(Sightings.class).where(Sightings_Table.report_id.eq(reportID)).orderBy(Sightings_Table._id, false).queryList();
+        Toast.makeText(getActivity(), "Position "+sightings.size(), Toast.LENGTH_LONG).show();
+
         if(sightings!=null) {
             sightingAdapter.setData(sightings);
             sightingAdapter.notifyDataSetChanged();
@@ -154,10 +130,10 @@ public class SightingListFragment extends Fragment {
 
         if (sightings.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
-            frameView.setVisibility(View.GONE);
+            sightingsRecyclerView.setVisibility(View.GONE);
         } else {
             emptyView.setVisibility(View.GONE);
-            frameView.setVisibility(View.VISIBLE);
+            sightingsRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -187,7 +163,6 @@ public class SightingListFragment extends Fragment {
     }
 
     public void processIntent(){
-
         Bundle bundle = getArguments();
         if(bundle.containsKey(Constants.REPORT_ID)){
             reportID = bundle.getString(Constants.REPORT_ID);

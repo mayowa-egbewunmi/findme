@@ -57,7 +57,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MenuViewHo
         holder.sexView.setText(reportItem.sex);
         holder.complexionView.setText(reportItem.complexion);
         Picasso.with(context)
-                .load(Constants.BASE_STORAGE + reportItem.imageUrl)
+                .load(reportItem.imageUrl)
                 .placeholder(R.drawable.empty_profile2)
                 .error(R.drawable.empty_profile2)
                 .into(holder.imgView);
