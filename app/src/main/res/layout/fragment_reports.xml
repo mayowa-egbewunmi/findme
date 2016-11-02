@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:paddingLeft="2dp"
+    android:paddingStart="2dp"
     tools:context=".main.publicreports.ReportFragment">
 
     <FrameLayout

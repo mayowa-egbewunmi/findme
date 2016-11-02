@@ -57,7 +57,6 @@ public class SightingActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
         adapter.addFragment(SightingListFragment.newInstance(reportID), Constants.SIGTHING.toUpperCase());
         adapter.addFragment(SightingCreateFragment.newInstance(reportID), Constants.CREATE_SIGHTINGS.toUpperCase());
 

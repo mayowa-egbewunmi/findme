@@ -49,7 +49,11 @@ public class UserDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         utility = new Utility(getActivity());
-        listener = (DialogListener) getActivity();
+        if(getActivity() instanceof DialogListener)
+            listener = (DialogListener) getActivity();
+        else if(getParentFragment() instanceof  DialogListener){
+            listener = (DialogListener) getParentFragment();
+        }
     }
 
     @Override

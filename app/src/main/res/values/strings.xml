@@ -119,7 +119,7 @@
     <string name="sex_male">Male</string>
     <string name="sex_female">Female</string>
     <string name="name">Name</string>
-    <string name="sex">Sex</string>
+    <string name="sex">Gender</string>
     <string name="age">Age</string>
     <string name="height">Height</string>
     <string name="complexion">Complexion</string>

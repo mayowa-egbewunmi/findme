@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
     android:background="@color/white"
     tools:context=".main.myreports.MyReportFragment">
 

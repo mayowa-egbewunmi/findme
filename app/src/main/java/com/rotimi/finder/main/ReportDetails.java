@@ -130,7 +130,7 @@ public class ReportDetails extends AppCompatActivity {
             }
             case R.id.call_reporting_line:{
                 //Extract mobile number and do make call here;
-                String helpLine = reportItem.police.substring(reportItem.police.indexOf(":")).trim();
+                String helpLine = reportItem.police.substring(reportItem.police.indexOf(":")+1).trim();
                 makeCall(helpLine);
             }
         }
@@ -146,7 +146,7 @@ public class ReportDetails extends AppCompatActivity {
                 //Explain here why you need this permission
             }
             //And finally ask for the permission
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE }, Constants.MY_PERMISSIONS_REQUEST);
+            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.CALL_PHONE }, Constants.MY_PERMISSIONS_REQUEST);
             return;
         }
         Intent callIntent = new Intent(Intent.ACTION_CALL);
