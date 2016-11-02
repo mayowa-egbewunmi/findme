@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/sightings"
+        android:title="@string/sightings"
+        app:showAsAction="always|withText"/>
+
+    <item android:id="@+id/call.reporting.line"
+        android:title="@string/call_reporting_line"
+        app:showAsAction="ifRoom"/>
+
+</menu>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "572617629551",
+    "firebase_url": "https://findme-96ebd.firebaseio.com",
+    "project_id": "findme-96ebd",
+    "storage_bucket": "findme-96ebd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572617629551:android:c4fd349a557fe6e8",
+        "android_client_info": {
+          "package_name": "com.rotimi.findme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572617629551-usj5fcg84ffg5csihcdladkltaaju04n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCnaTEmDaiuGV_3ccKHHFB_c0aq6yOhoU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

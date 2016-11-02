@@ -1,0 +1,99 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="@string/where"
+            android:gravity="left"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            android:layout_marginBottom="10dp"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/create_sighting.location"
+            android:layout_marginBottom="10dp"
+            android:textSize="12dp"
+            android:drawableBottom="@color/black_overlay"
+            android:inputType="text"
+            android:hint="@string/enter_location"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:text="@string/comment"
+            android:gravity="left"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            android:layout_marginBottom="10dp"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <EditText
+            android:id="@+id/create_sighting.comment"
+            android:layout_marginBottom="10dp"
+            android:textSize="12dp"
+            android:gravity="left"
+            android:drawableBottom="@color/black_overlay"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:hint="@string/enter_comment"
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+        <TextView
+            android:id="@+id/create_sighting.upload.picture"
+            android:gravity="left"
+            android:padding="8dp"
+            android:textSize="16dp"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:foreground="?android:selectableItemBackground"
+            android:text="@string/have_evidence"/>
+
+        <ImageView
+            android:id="@+id/create_sighting.picture"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="10dp"
+            android:visibility="visible"
+            android:src="@drawable/empty_profile2"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:id="@+id/create_sighting.upload"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textSize="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent"
+            android:elevation="2dp"
+            android:textAllCaps="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:foreground="?android:selectableItemBackground"
+            android:text="@string/send_report"/>
+
+
+    </LinearLayout>
+</ScrollView>
