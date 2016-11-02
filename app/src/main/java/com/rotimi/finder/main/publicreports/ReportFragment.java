@@ -1,7 +1,10 @@
 package com.rotimi.finder.main.publicreports;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,28 +23,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.FindMeDatabase;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
 import com.rotimi.finder.util.Utility;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements FindMeDatabase.OnReportUpdatedListener {
 
     private static final String LOG = ReportFragment.class.getName();
     private List<ReportItem> reports;
     private ReportAdapter reportAdapter;
     private Utility utils;
 
-    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.reports_recycler_view) RecyclerView reportsRecyclerView;
     @BindView(R.id.reports_empty) LinearLayout emptyView;
-    @BindView(R.id.reports_card_frame) CardView frameView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,9 +69,7 @@ public class ReportFragment extends Fragment {
         for(int i = 0; i < 6; i++){
             reports.add(new ReportItem());
         }
-        
         showEmptyState();
-
         reportAdapter = new ReportAdapter(getActivity(), reports);
 
         reportsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -86,46 +88,49 @@ public class ReportFragment extends Fragment {
 
             }
         }));
-
-        fab.setOnClickListener(view1 -> {
-            //TODO show reports create
-        });
     }
 
-    @Override
-    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+    public ArrayList<ReportItem> getAllReports(){
+        return null;
+    }
+
+//    @Override
+//    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.menu_main, menu);
 //        MenuItem searchItem = menu.findItem(R.id.search);
 //        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 //        searchView.setOnQueryTextListener(this);
-    }
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.upload: {
-                try {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Constants.MY_PERMISSIONS_REQUEST);
-                        return true;
-                    }
-                    //TODO: Do action here when permission is granted
-                    //uploadBulkMenu("");//TODO remove this
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        switch (id) {
+//            case R.id.upload: {
+//                try {
+//                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                                Constants.MY_PERMISSIONS_REQUEST);
+//                        return true;
+//                    }
+//                    //TODO: Do action here when permission is granted
+//                    //uploadBulkMenu("");//TODO remove this
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                return true;
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onResume() {
         super.onResume();
+        runSetUp();
+    }
 
+    public void runSetUp(){
         reports = new ArrayList<>(); //GET reports here
         reportAdapter.setData(reports);
         reportAdapter.notifyDataSetChanged();
@@ -133,14 +138,18 @@ public class ReportFragment extends Fragment {
         showEmptyState();
     }
 
-    public void showEmptyState() {
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 
+    public void showEmptyState() {
         if (reports.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
-            frameView.setVisibility(View.GONE);
+            reportsRecyclerView.setVisibility(View.GONE);
         } else {
             emptyView.setVisibility(View.GONE);
-            frameView.setVisibility(View.VISIBLE);
+            reportsRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -148,11 +157,10 @@ public class ReportFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(LOG, "result on activity");
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case Constants.DUMMY: {
-                    //uploadBulkMenu(data.getData().getPath());
+
                 }
             }
         }
@@ -168,6 +176,18 @@ public class ReportFragment extends Fragment {
                 break;
             }
         }
+    }
+
+    @Override
+    public void reportUpdated(DataSnapshot dataSnapshot) {
+        reports.clear();
+        Iterator<DataSnapshot> reportItems = dataSnapshot.getChildren().iterator();
+
+        while (reportItems.hasNext()){
+            DataSnapshot ds = reportItems.next();
+            reports.add((ReportItem) ds.getValue());
+        }
+        runSetUp();
     }
 
 //    public void uploadBulkMenu(String filePath){

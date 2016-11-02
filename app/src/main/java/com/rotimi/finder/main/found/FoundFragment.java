@@ -20,34 +20,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.FindMeDatabase;
 import com.rotimi.finder.main.publicreports.ReportFragment;
+import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
 import com.rotimi.finder.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoundFragment extends Fragment{
+public class FoundFragment extends Fragment implements FindMeDatabase.OnReportUpdatedListener{
     private static final String LOG = FoundFragment.class.getName();
-    private List<FoundItem> found;
+    private List<ReportItem> found;
     private FoundAdapter foundAdapter;
     private Utility utils;
     
     @BindView(R.id.found_recycler_view) RecyclerView foundRecyclerView;
     @BindView(R.id.found_empty) LinearLayout emptyView;
-    @BindView(R.id.found_card_frame) CardView frameView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -64,7 +67,7 @@ public class FoundFragment extends Fragment{
 
         found = new ArrayList<>(); //TODO: Do your API request here
         for(int i = 0; i < 6; i++){
-            found.add(new FoundItem());
+            found.add(new ReportItem());
         }
 
         showEmptyState();
@@ -77,7 +80,7 @@ public class FoundFragment extends Fragment{
 
             @Override
             public void onClick(View view, int position) {
-                FoundItem FoundItem = found.get(position);
+                ReportItem FoundItem = found.get(position);
                 //TODO: show wanted details
             }
 
@@ -90,40 +93,14 @@ public class FoundFragment extends Fragment{
     }
 
     @Override
-    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-//        MenuItem searchItem = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        searchView.setOnQueryTextListener(this);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.upload: {
-                try {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Constants.MY_PERMISSIONS_REQUEST);
-                        return true;
-                    }
-                    //TODO: Do action here when permission is granted
-                    //uploadBulkMenu("");//TODO remove this
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
-        found = new ArrayList<>(); //GET found here
+        runSetUp();
+    }
+
+    public void runSetUp(){
+        found = new ArrayList<>(); //GET reports here
         foundAdapter.setData(found);
         foundAdapter.notifyDataSetChanged();
 
@@ -134,10 +111,10 @@ public class FoundFragment extends Fragment{
 
         if (found.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
-            frameView.setVisibility(View.GONE);
+            foundRecyclerView.setVisibility(View.GONE);
         } else {
             emptyView.setVisibility(View.GONE);
-            frameView.setVisibility(View.VISIBLE);
+            foundRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -165,5 +142,19 @@ public class FoundFragment extends Fragment{
                 break;
             }
         }
+    }
+    @Override
+    public void reportUpdated(DataSnapshot dataSnapshot) {
+        found.clear();
+        Iterator<DataSnapshot> reportItems = dataSnapshot.getChildren().iterator();
+
+        while (reportItems.hasNext()){
+
+            //TODO: Filter out founds
+
+            DataSnapshot ds = reportItems.next();
+            found.add((ReportItem) ds.getValue());
+        }
+        runSetUp();
     }
 }

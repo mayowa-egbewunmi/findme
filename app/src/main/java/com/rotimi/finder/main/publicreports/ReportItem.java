@@ -1,16 +1,33 @@
 package com.rotimi.finder.main.publicreports;
 
+import com.rotimi.finder.main.sightings.SightingItem;
+import com.rotimi.finder.util.SystemData;
+
+import java.util.List;
+
 /**
  * Created by mayowa on 7/23/16.
  */
 public class ReportItem {
 
     public String name;
-    public int id;
+    public String comment;
+    public String police;
+    public String age;
+    public String height;
+    public String sex;
+    public String complexion;
+    public String type;
+    public String imageUrl;
+    public String id;
 
+    public String found = "0";
+    public String mobile_number;
 
-    public String getName(){
-        return name;
+    public ReportItem(){
+
     }
+
+    public List<SightingItem> sightings;
 
 }

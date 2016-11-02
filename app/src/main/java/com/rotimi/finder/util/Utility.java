@@ -14,24 +14,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
-
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.HttpMethod;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.marcohc.toasteroid.Toasteroid;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.softcom.npdn.NPDN;
-import com.softcom.npdn.R;
-import com.softcom.npdn.api.API;
-import com.softcom.npdn.api.RequestInterceptor;
-import com.softcom.npdn.api.models._Status;
-import com.softcom.npdn.db.models.User;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,11 +25,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by mayowa on 2/16/16.
  */
@@ -71,9 +50,16 @@ public class Utility {
      *
      * @return Boolean
      */
-    public Boolean isUserLoggedIn() {
-        User user = SQLite.select().from(User.class).where().querySingle();
-        return (user != null && user.isActive == 1);
+    public boolean isRegistered() {
+        SystemData systemData = new SystemData(context);
+        return  systemData.getBoolean(Constants.USER, false);
+    }
+
+    public void registerUser(String name, String phone){
+        SystemData systemData = new SystemData(context);
+        systemData.writeString(name, Constants.NAME);
+        systemData.writeString(phone, Constants.PHONE);
+        systemData.writeBoolean(true, Constants.USER);
     }
 
     /**
@@ -81,8 +67,9 @@ public class Utility {
      * @return Boolean
      */
     public Boolean isUserOnboarded() {
-        User user = SQLite.select().from(User.class).where().querySingle();
-        return (user != null);
+//        User user = SQLite.select().from(User.class).where().querySingle();
+//        return (user != null);
+        return false;
     }
 
     public int getStatusBarHeight() {
@@ -101,7 +88,6 @@ public class Utility {
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-
         return px;
     }
 
@@ -159,18 +145,6 @@ public class Utility {
             return null;
         }
     }
-
-    public boolean isContentAvailable() {
-
-        Log.d(LOG, Environment.getDataDirectory().getPath());
-        File directory = new File(Environment.getDataDirectory().getPath() + Constants.DATA_DIRECTORY);
-        File[] contents = directory.listFiles();
-
-        if (contents == null) return false;
-        else if (contents.length == 0) return false;
-        else return true;
-    }
-
     public InputStream readFile(String filename) {
         InputStream inputStream = null;
         try {
@@ -251,102 +225,5 @@ public class Utility {
         return Configuration.ORIENTATION_PORTRAIT == getScreenOrientation();
     }
 
-    public void shareOnFacebook(String message) {
-        Bundle params = new Bundle();
-        params.putString("message", message);
 
-            /* make the API call */
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/me/feed",
-                params,
-                HttpMethod.POST,
-                response -> {
-                    //send a broadcast
-                    Toasteroid.show((Activity)context, response.getRawResponse(), Toasteroid.STYLES.INFO);
-                }
-        ).executeAsync();
-    }
-
-    public void connectToFacebook(Activity activity, CallbackManager callbackManager){
-        SystemData systemData = new SystemData(context);
-        LoginManager.getInstance().logInWithPublishPermissions(activity, Arrays.asList("publish_actions"));
-
-        //Request user permission to publish post
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                systemData.writeBoolean(true, Constants.FACEBOOK_CONNECTED);
-
-                //TODO: API to update social status.
-                Toasteroid.show((Activity)context, R.string.access_granted, Toasteroid.STYLES.ERROR);
-            }
-
-            @Override
-            public void onCancel() {}
-
-            @Override
-            public void onError(FacebookException exception) {
-                exception.printStackTrace();
-                Toasteroid.show((Activity)context, exception.getMessage(), Toasteroid.STYLES.ERROR);
-            }
-        });
-    }
-    public void connectToFacebook(Fragment fragment, CallbackManager callbackManager){
-        SystemData systemData = new SystemData(context);
-
-        LoginManager.getInstance().logInWithPublishPermissions(fragment, Arrays.asList("publish_actions"));
-
-        //Request user permission to publish post
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                systemData.writeBoolean(true, Constants.FACEBOOK_CONNECTED);
-                if(NPDN.user!=null) { //at this point user may or may not have logged in
-                    NPDN.user.facebookDefault = 1;
-                    NPDN.user.update();
-                }
-                fragment.onResume();
-                Toast.makeText(context, R.string.access_granted, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancel() {}
-
-            @Override
-            public void onError(FacebookException exception) {
-                exception.printStackTrace();
-                Toast.makeText(context, R.string.try_again, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void updateSocialConnectStatus(HashMap<String, String> userDetails){
-        RequestInterceptor requestInterceptor = new RequestInterceptor(context);
-        API api = requestInterceptor.retrofit.create(API.class);
-        Call<_Status> call = api.updateUser(NPDN.user.id, userDetails);
-
-        call.enqueue(new Callback<_Status>() {
-            @Override
-            public void onResponse(Call<_Status> call, Response<_Status> response) {
-                if (response.isSuccessful()){
-                    Toasteroid.show((Activity) context, response.message(), Toasteroid.STYLES.SUCCESS);
-                    if(NPDN.user!=null){
-                        if(userDetails.containsKey(Constants.FACEBOOK_DEFAULT))
-                            NPDN.user.facebookDefault = (userDetails.get(Constants.FACEBOOK_DEFAULT).equalsIgnoreCase("true"))? 1:0;
-                        if(userDetails.containsKey(Constants.TWITTER_DEFAULT))
-                            NPDN.user.twitterDefault = (userDetails.get(Constants.TWITTER_DEFAULT).equalsIgnoreCase("true"))? 1:0;
-                        NPDN.user.update();
-                    }
-
-                } else {
-                    Toasteroid.show((Activity)context, response.message(), Toasteroid.STYLES.ERROR);
-                }
-            }
-            @Override
-            public void onFailure(Call<_Status> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
 }

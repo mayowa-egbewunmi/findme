@@ -1,30 +1,40 @@
 package com.rotimi.finder.api;
 
-import com.softcom.npdn.api.models._Announcement;
-import com.softcom.npdn.api.models._Feed;
-import com.softcom.npdn.api.models._Feeds;
-import com.softcom.npdn.api.models._Login;
-import com.softcom.npdn.api.models._Status;
-import com.softcom.npdn.api.models._Token;
-import com.softcom.npdn.api.models._Validate;
-import com.softcom.npdn.api.models._Verify;
+
+import com.rotimi.finder.main.Status;
+import com.rotimi.finder.main.publicreports.ReportItem;
 
 import java.util.Map;
 
+import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by mayowa on 9/2/16.
  */
 public interface API {
 
+    @GET("reports/")
+    Call<ReportItem> getReports();
+
+    @GET("reports/{id}")
+    Call<ReportItem> getReportDetails(@Path("id") int id);
+
+    @POST("reports/")
+    Call<Status> postReport(@Body Map<String, String> a);
+
+    @POST("reports/{id}/sighting")
+    Call<Status> postReportSighting(@Body Map<String, String> a);
+
 //    @POST("auth/teacher/firstAccess")
 //    Call<_Verify> verify(@Body Map<String, String> details);
 
-    @POST("auth/teacher/login")
-    Call<_Login> login(@Body Map<String, String> details);
+//    @POST("auth/teacher/login")
+//    Call<_Login> login(@Body Map<String, String> details);
 
 
 //    @PUT("teacher/{id}")

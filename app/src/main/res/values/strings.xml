@@ -88,7 +88,7 @@
     <string name="excel_no_header">Excel sheet does not have name and/or price header, Kindly add \"Name\" and \"Price\" to the header</string>
     <string name="no_file_manager">No suitable File Manager was found</string>
     <string name="permission_granted">Permission granted, Kindly try again</string>
-    <string name="no_permission">Ysell needs permission to read files</string>
+    <string name="no_permission">"Oops you just denied the permission"</string>
     <string name="hint_message_all">Message All</string>
     <string name="message_all_customers">Message all customers</string>
     <string name="send">SEND MESSAGE</string>
@@ -102,8 +102,8 @@
     <string name="when_last_seen">When last seen</string>
     <string name="where_last_seen">Where last seen</string>
     <string name="no_reports">No report created so far! Be conscious</string>
-    <string name="title_activity_my_report_details">MyReportDetails</string>
-    <string name="title_activity_found">FoundActivity</string>
+    <string name="title_activity_my_report_details">Report Details</string>
+    <string name="title_activity_found">Founds</string>
     <string name="no_found">Where are finding? Join us in the search</string>
     <string name="sample_date">10 days ago</string>
     <string name="date">Date</string>
@@ -111,7 +111,7 @@
     <string name="sample_location">Ojota road</string>
     <string name="enter_person_name">Enter person name</string>
     <string name="enter_person_age">Enter person age</string>
-    <string name="enter_person_height">Enter person height</string>
+    <string name="enter_person_height">Enter person height in ft</string>
     <string name="enter_person_sex">Enter person sex</string>
     <string name="enter_person_complexion">Enter person complexion</string>
     <string name="enter_nearest_police_station">Report to which station?</string>
@@ -141,4 +141,19 @@
     <string name="create_sighting">Create Sighting</string>
     <string name="call_reporting_line">Call Reporting line</string>
     <string name="call_reporting_number">Call Reporting Line</string>
+    <string name="title_activity_sighting">Sightings</string>
+    <string name="no_sighting">No Sighting reported so far.</string>
+    <string name="sample_comment">This is just a random comment from who ever sights occurence of reported incidence</string>
+    <string name="comment">Comment</string>
+    <string name="enter_comment">Add other important details here</string>
+    <string name="enter_location">Enter Location in full</string>
+    <string name="have_evidence">Any Picture Evidence? Upload</string>
+    <string name="user">Enter Profile Details</string>
+    <string name="enter_name">Name</string>
+    <string name="enter_number">Phone number</string>
+    <string name="sightings">Sightings</string>
+    <string name="create_report">Create Report</string>
+    <string name="empty_error">Field cannot be empty</string>
+    <string name="picture_not_loaded">You have not uploaded picture</string>
+    <string name="storage_permitted">Now you can upload profile picture</string>
 </resources>

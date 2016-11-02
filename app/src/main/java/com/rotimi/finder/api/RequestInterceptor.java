@@ -2,8 +2,8 @@ package com.rotimi.finder.api;
 
 import android.content.Context;
 
-import com.softcom.npdn.utils.Constants;
-import com.softcom.npdn.utils.Utility;
+import com.rotimi.finder.util.Constants;
+import com.rotimi.finder.util.Utility;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

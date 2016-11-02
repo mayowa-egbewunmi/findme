@@ -7,11 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.softcom.npdn.R;
-import com.softcom.npdn.api.models._Token;
-import com.softcom.npdn.db.models.User;
-import com.softcom.npdn.utils.Constants;
-import com.softcom.npdn.utils.Utility;
+import com.rotimi.finder.util.Utility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,13 +16,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by mayowa on 9/30/16.
  */
@@ -98,40 +88,40 @@ public class NetworkRequest {
         return responseMessage;
     }
 
-    public void getToken(String intentFilter, String key){
-
-        RequestInterceptor requestInterceptor = new RequestInterceptor(context);
-        API api = requestInterceptor.retrofit.create(API.class);
-
-        Log.d(LOG, SQLite.select().from(User.class).where().querySingle().key);
-        Map<String, String> token = new HashMap<>();
-        token.put(Constants.KEY, key);
-        Call<_Token> call = api.getToken(token);
-
-        call.enqueue(new Callback<_Token>() {
-            @Override
-            public void onResponse(Call<_Token> call, Response<_Token> response) {
-                if(response.isSuccessful()) {
-                    //update user token
-                    User user =  SQLite.select().from(User.class).querySingle();
-                    if(user == null) user = new User();
-                    user.token = response.body().token;
-                    user.save();
-
-                    Log.d(LOG, user.token);
-
-                    //send broadcast for retry
-                    Intent intent = new Intent(intentFilter);
-                    context.sendBroadcast(intent);
-
-                }else{
-                    Toast.makeText(context, response.message()+" for get token"+response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<_Token> call, Throwable t) {
-                Toast.makeText(context, R.string.network_error, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void getToken(String intentFilter, String key){
+//
+//        RequestInterceptor requestInterceptor = new RequestInterceptor(context);
+//        API api = requestInterceptor.retrofit.create(API.class);
+//
+//        Log.d(LOG, SQLite.select().from(User.class).where().querySingle().key);
+//        Map<String, String> token = new HashMap<>();
+//        token.put(Constants.KEY, key);
+//        Call<_Token> call = api.getToken(token);
+//
+//        call.enqueue(new Callback<_Token>() {
+//            @Override
+//            public void onResponse(Call<_Token> call, Response<_Token> response) {
+//                if(response.isSuccessful()) {
+//                    //update user token
+//                    User user =  SQLite.select().from(User.class).querySingle();
+//                    if(user == null) user = new User();
+//                    user.token = response.body().token;
+//                    user.save();
+//
+//                    Log.d(LOG, user.token);
+//
+//                    //send broadcast for retry
+//                    Intent intent = new Intent(intentFilter);
+//                    context.sendBroadcast(intent);
+//
+//                }else{
+//                    Toast.makeText(context, response.message()+" for get token"+response.code(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<_Token> call, Throwable t) {
+//                Toast.makeText(context, R.string.network_error, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 }

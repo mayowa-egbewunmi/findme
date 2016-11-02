@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         ft.replace(R.id.fcontainer, BaseController.newInstance());
+        ft.commit();
     }
 
     @Override

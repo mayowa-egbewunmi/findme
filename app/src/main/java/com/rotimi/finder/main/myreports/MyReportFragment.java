@@ -20,31 +20,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.FindMeDatabase;
 import com.rotimi.finder.main.publicreports.ReportFragment;
+import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
 import com.rotimi.finder.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyReportFragment extends Fragment{
+public class MyReportFragment extends Fragment implements FindMeDatabase.OnReportUpdatedListener{
 
 
     private static final String LOG = ReportFragment.class.getName();
-    private List<MyReportItem> myreports;
+    private List<ReportItem> myreports;
     private MyReportAdapter myreportsAdapter;
     private Utility utils;
 
     @BindView(R.id.myreports_recycler_view) RecyclerView myReportRecyclerView;
     @BindView(R.id.myreports_empty) LinearLayout emptyView;
-    @BindView(R.id.myreports_card_frame) CardView frameView;
     @BindView(R.id.fab) FloatingActionButton fab;
 
     @Override
@@ -65,9 +68,11 @@ public class MyReportFragment extends Fragment{
         ButterKnife.bind(this, view);
         utils = new Utility(getActivity());
 
+        //runSetUp
+
         myreports = new ArrayList<>(); //TODO: Do your API request here
         for(int i = 0; i < 6; i++){
-            myreports.add(new MyReportItem());
+            myreports.add(new ReportItem());
         }
 
         showEmptyState();
@@ -80,7 +85,7 @@ public class MyReportFragment extends Fragment{
 
             @Override
             public void onClick(View view, int position) {
-                MyReportItem MyReportItem = myreports.get(position);
+                ReportItem ReportItem = myreports.get(position);
                 //TODO: show wanted details
             }
 
@@ -91,46 +96,20 @@ public class MyReportFragment extends Fragment{
         }));
 
         fab.setOnClickListener(view1 -> {
-            //TODO show wanted create
+            Intent intent = new Intent(getActivity(), CreateMyReport.class);
+            startActivity(intent);
         });
-
-    }
-
-    @Override
-    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-//        MenuItem searchItem = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        searchView.setOnQueryTextListener(this);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.upload: {
-                try {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Constants.MY_PERMISSIONS_REQUEST);
-                        return true;
-                    }
-                    //TODO: Do action here when permission is granted
-                    //uploadBulkMenu("");//TODO remove this
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        
+        runSetUp();
+    }
 
-        myreports = new ArrayList<>(); //GET myreports here
+    public void runSetUp(){
+        myreports = new ArrayList<>(); //GET reports here
         myreportsAdapter.setData(myreports);
         myreportsAdapter.notifyDataSetChanged();
 
@@ -141,10 +120,10 @@ public class MyReportFragment extends Fragment{
 
         if (myreports.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
-            frameView.setVisibility(View.GONE);
+            myReportRecyclerView.setVisibility(View.GONE);
         } else {
             emptyView.setVisibility(View.GONE);
-            frameView.setVisibility(View.VISIBLE);
+            myReportRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -172,5 +151,17 @@ public class MyReportFragment extends Fragment{
                 break;
             }
         }
+    }
+
+    @Override
+    public void reportUpdated(DataSnapshot dataSnapshot) {
+        myreports.clear();
+        Iterator<DataSnapshot> reportItems = dataSnapshot.getChildren().iterator();
+        while (reportItems.hasNext()){
+            //TODO: Filter out my reports
+            DataSnapshot ds = reportItems.next();
+            myreports.add((ReportItem) ds.getValue());
+        }
+        runSetUp();
     }
 }

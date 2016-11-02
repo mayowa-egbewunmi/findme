@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.rotimi.finder.main.myreports.MyReportDetails">
+    tools:context="com.rotimi.finder.main.myreports.CreateMyReport">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                 android:layout_marginBottom="10dp"
                 android:textSize="12dp"
                 android:drawableBottom="@color/black_overlay"
-                android:inputType="text"
+                android:inputType="number"
                 android:hint="@string/enter_person_age"
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
@@ -121,7 +121,7 @@
                 android:textSize="12dp"
                 android:drawableBottom="@color/black_overlay"
                 android:layout_marginBottom="10dp"
-                android:inputType="text"
+                android:inputType="number"
                 android:hint="@string/enter_person_height"
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
@@ -247,6 +247,29 @@
             </RadioGroup>
 
             <TextView
+                android:text="@string/comment"
+                android:gravity="left"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <EditText
+                android:id="@+id/myreport.comment"
+                android:textSize="12dp"
+                android:drawableBottom="@color/black_overlay"
+                android:layout_marginBottom="10dp"
+                android:inputType="textMultiLine"
+                android:maxLines="6"
+                android:gravity="left|top"
+                android:hint="@string/enter_comment"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <TextView
                 android:id="@+id/myreport.upload"
                 android:gravity="center"
                 android:padding="8dp"
@@ -260,7 +283,6 @@
                 android:textColor="@color/white"
                 android:foreground="?android:selectableItemBackground"
                 android:text="@string/send_report"/>
-
 
         </LinearLayout>
     </ScrollView>

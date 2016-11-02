@@ -5,6 +5,7 @@ package com.rotimi.finder.main.found;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rotimi.finder.R;
+import com.rotimi.finder.main.ReportDetails;
+import com.rotimi.finder.main.publicreports.ReportItem;
 
 import java.util.List;
 
@@ -25,9 +28,9 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
 
     private Context context;
 
-    private List<FoundItem> foundItems;
+    private List<ReportItem> foundItems;
 
-    public FoundAdapter(Context context, List<FoundItem> foundItems) {
+    public FoundAdapter(Context context, List<ReportItem> foundItems) {
         this.context = context;
         this.foundItems = foundItems;
     }
@@ -42,9 +45,8 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
 
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
-        FoundItem foundItem = foundItems.get(position);
-        holder.frameView.setOnClickListener(v -> {
-            Toast.makeText(context, "Yes", Toast.LENGTH_LONG).show();
+        ReportItem foundItem = foundItems.get(position);
+        holder.frameView.setOnClickListener(v -> { context.startActivity(new Intent(context, ReportDetails.class));
         });
     }
 
@@ -53,7 +55,7 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
         return foundItems.size();
     }
 
-    public void setData(List<FoundItem> found) {
+    public void setData(List<ReportItem> found) {
         this.foundItems = found;
     }
 

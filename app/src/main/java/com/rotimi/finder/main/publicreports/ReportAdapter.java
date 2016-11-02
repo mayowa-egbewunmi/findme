@@ -5,6 +5,7 @@ package com.rotimi.finder.main.publicreports;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rotimi.finder.R;
+import com.rotimi.finder.main.ReportDetails;
 
 import java.util.List;
 
@@ -46,7 +48,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MenuViewHo
         ReportItem reportItem = reports.get(position);
         
         holder.frameView.setOnClickListener(v -> {
-            Toast.makeText(context, "Yes", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context, ReportDetails.class);
+            context.startActivity(intent);
         });
 
 //        String letter = String.valueOf(reports.get(position).name.charAt(0));

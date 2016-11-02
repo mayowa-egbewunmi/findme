@@ -55,26 +55,26 @@ public class BaseController extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.base_controller, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.action_dashboard:{
-//                Intent intent = new Intent(getActivity(), Dashboard.class);
-//                startActivity(intent);
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        int id = item.getItemId();
+//
+//        switch (id){
+//            case R.id.action_dashboard:{
+////                Intent intent = new Intent(getActivity(), Dashboard.class);
+////                startActivity(intent);
+//                return true;
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -94,9 +94,8 @@ public class BaseController extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ReportFragment(), Constants.PUBLIC_REPORTS.toUpperCase());
+        adapter.addFragment(new ReportFragment(), Constants.ALL_REPORTS.toUpperCase());
         adapter.addFragment(new MyReportFragment(), Constants.MY_REPORTS.toUpperCase());
         adapter.addFragment(new FoundFragment(), Constants.FOUND.toUpperCase());
 

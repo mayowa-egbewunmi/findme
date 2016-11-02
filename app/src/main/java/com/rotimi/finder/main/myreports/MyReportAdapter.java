@@ -5,6 +5,7 @@ package com.rotimi.finder.main.myreports;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.rotimi.finder.R;
+import com.rotimi.finder.main.ReportDetails;
+import com.rotimi.finder.main.publicreports.ReportItem;
 
 import java.util.List;
 
@@ -24,9 +27,9 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
 
     private Context context;
 
-    private List<MyReportItem> myReportItems;
+    private List<ReportItem> myReportItems;
 
-    public MyReportAdapter(Context context, List<MyReportItem> myReportItems) {
+    public MyReportAdapter(Context context, List<ReportItem> myReportItems) {
         this.context = context;
         this.myReportItems = myReportItems;
     }
@@ -41,9 +44,10 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
 
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
-        MyReportItem myReportItem = myReportItems.get(position);
+        ReportItem myReportItem = myReportItems.get(position);
         holder.frameView.setOnClickListener(v -> {
-            Toast.makeText(context, "Yes", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context, ReportDetails.class);
+            context.startActivity(intent);
         });
     }
 
@@ -52,7 +56,7 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
         return myReportItems.size();
     }
 
-    public void setData(List<MyReportItem> myreports) {
+    public void setData(List<ReportItem> myreports) {
         this.myReportItems = myreports;
     }
 

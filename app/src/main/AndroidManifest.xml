@@ -28,17 +28,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.publicreports.ReportDetails"
-            android:label="@string/title_activity_wanted_details"
-            android:theme="@style/MyMaterialTheme" />
-        <activity
-            android:name=".main.myreports.MyReportDetails"
-            android:label="@string/title_activity_my_report_details"
-            android:theme="@style/MyMaterialTheme" />
-        <activity
             android:name=".main.found.FoundActivity"
             android:label="@string/title_activity_found"
-            android:theme="@style/MyMaterialTheme"></activity>
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".main.myreports.CreateMyReport"
+            android:label="@string/create_report"
+            android:theme="@style/MyMaterialTheme" />
+
+        <activity
+            android:name=".main.sightings.SightingActivity"
+            android:label="@string/title_activity_sighting"
+            android:theme="@style/MyMaterialTheme"
+            ></activity>
+        <activity android:name=".main.ReportDetails"
+            android:label="@string/title_activity_my_report_details"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
