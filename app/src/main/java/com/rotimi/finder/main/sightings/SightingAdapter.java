@@ -15,6 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.Reports;
+import com.rotimi.finder.db.Sightings;
+import com.rotimi.finder.util.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,9 +29,9 @@ public class SightingAdapter extends RecyclerView.Adapter<SightingAdapter.MenuVi
 
     private Context context;
 
-    private List<SightingItem> sightings;
+    private List<Sightings> sightings;
 
-    public SightingAdapter(Context context, List<SightingItem> sightings) {
+    public SightingAdapter(Context context, List<Sightings> sightings) {
         this.context = context;
         this.sightings = sightings;
     }
@@ -43,17 +47,16 @@ public class SightingAdapter extends RecyclerView.Adapter<SightingAdapter.MenuVi
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
 
-        SightingItem sightingItem = sightings.get(position);
+        Sightings sightingItem = sightings.get(position);
+        holder.locationView.setText(sightingItem.location);
+        holder.commentView.setText(sightingItem.comment);
+        holder.dateView.setText(sightingItem.created_at);
 
-//        String letter = String.valueOf(sightings.get(position).name.charAt(0));
-//
-////      Create a new TextDrawable for our image's background
-//        TextDrawable drawable = TextDrawable.builder()
-//                .buildRound(letter, generator.getRandomColor());
-//
-//        holder.img.setImageDrawable(drawable);
-//        holder.name.setText(sightings.get(position).name);
-//        holder.price.setText("#"+ String.valueOf(sightings.get(position).price));
+        Picasso.with(context)
+                .load(Constants.BASE_STORAGE + sightingItem.imageUrl)
+                .placeholder(R.drawable.empty_profile2)
+                .error(R.drawable.empty_profile2)
+                .into(holder.imgView);
     }
 
 
@@ -63,7 +66,7 @@ public class SightingAdapter extends RecyclerView.Adapter<SightingAdapter.MenuVi
         return sightings.size();
     }
 
-    public void setData(List<SightingItem> sightings) {
+    public void setData(List<Sightings> sightings) {
         this.sightings = sightings;
     }
 

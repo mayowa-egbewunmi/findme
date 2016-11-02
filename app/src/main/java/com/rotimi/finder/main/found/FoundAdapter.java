@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.Reports;
 import com.rotimi.finder.main.ReportDetails;
 import com.rotimi.finder.main.publicreports.ReportItem;
+import com.rotimi.finder.util.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,9 +31,9 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
 
     private Context context;
 
-    private List<ReportItem> foundItems;
+    private List<Reports> foundItems;
 
-    public FoundAdapter(Context context, List<ReportItem> foundItems) {
+    public FoundAdapter(Context context, List<Reports> foundItems) {
         this.context = context;
         this.foundItems = foundItems;
     }
@@ -46,19 +48,20 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
 
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
-        ReportItem foundItem = foundItems.get(position);
-
-        holder.ageView.setText(foundItem.age);
+        Reports foundItem = foundItems.get(position);
+        holder.ageView.setText("Age "+foundItem.age);
         holder.nameView.setText(foundItem.name);
         holder.sexView.setText(foundItem.sex);
         holder.complexionView.setText(foundItem.complexion);
-        Picasso.with(context).load(foundItem.imageUrl)
+        Picasso.with(context).load(Constants.BASE_STORAGE + foundItem.imageUrl)
                 .placeholder(R.drawable.empty_profile2)
-                .centerCrop()
                 .error(R.drawable.empty_profile2)
                 .into(holder.imgView);
 
-        holder.frameView.setOnClickListener(v -> { context.startActivity(new Intent(context, ReportDetails.class));
+        holder.frameView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ReportDetails.class);
+            intent.putExtra(Constants.REPORT_ID, foundItem.id);
+            context.startActivity(intent);
         });
     }
 
@@ -67,7 +70,7 @@ public class FoundAdapter extends RecyclerView.Adapter<FoundAdapter.MenuViewHold
         return foundItems.size();
     }
 
-    public void setData(List<ReportItem> found) {
+    public void setData(List<Reports> found) {
         this.foundItems = found;
     }
 

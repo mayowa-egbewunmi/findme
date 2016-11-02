@@ -1,6 +1,9 @@
 package com.rotimi.finder.main.found;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +19,12 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rotimi.finder.R;
 import com.rotimi.finder.api.FindMeDatabase;
+import com.rotimi.finder.db.Reports;
+import com.rotimi.finder.db.Reports_Table;
+import com.rotimi.finder.main.ReportDetails;
 import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
@@ -33,7 +40,7 @@ import butterknife.ButterKnife;
 
 public class FoundFragment extends Fragment{
     private static final String LOG = FoundFragment.class.getName();
-    private List<ReportItem> found;
+    private List<Reports> found;
     private FoundAdapter foundAdapter;
     private Utility utils;
     
@@ -69,13 +76,11 @@ public class FoundFragment extends Fragment{
 
             @Override
             public void onClick(View view, int position) {
-                ReportItem FoundItem = found.get(position);
                 //TODO: show wanted details
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
             }
         }));
         
@@ -84,16 +89,23 @@ public class FoundFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-
+        getActivity().registerReceiver(reportReceiver, new IntentFilter(Constants.REPORT_UPDATED));
         runSetUp();
     }
 
-    public void runSetUp(){
-        //TODO: any means to get data
-        foundAdapter.setData(found);
-        foundAdapter.notifyDataSetChanged();
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(reportReceiver);
+    }
 
-        showEmptyState();
+    public void runSetUp(){
+        found =  SQLite.select().from(Reports.class).where(Reports_Table.found.eq("1")).queryList();
+        if(found!=null) {
+            foundAdapter.setData(found);
+            foundAdapter.notifyDataSetChanged();
+            showEmptyState();
+        }
     }
 
     public void showEmptyState() {
@@ -131,5 +143,23 @@ public class FoundFragment extends Fragment{
                 break;
             }
         }
+    }
+
+    BroadcastReceiver reportReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            runSetUp();
+        }
+    };
+
+    public ArrayList<Reports> filterFoundReports(){
+        ArrayList founds = new ArrayList();
+        for(int i = 0; i < found.size(); i++){
+            Reports report = found.get(i);
+            if(report.found.equalsIgnoreCase("1")){
+                founds.add(report);
+            }
+        }
+        return founds;
     }
 }

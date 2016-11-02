@@ -104,7 +104,7 @@
     <string name="no_reports">No report created so far! Be conscious</string>
     <string name="title_activity_my_report_details">Report Details</string>
     <string name="title_activity_found">Founds</string>
-    <string name="no_found">Where are finding? Join us in the search</string>
+    <string name="no_found">We are finding? Join us in the search</string>
     <string name="sample_date">10 days ago</string>
     <string name="date">Date</string>
     <string name="where">Location</string>
@@ -161,4 +161,7 @@
     <string name="wait">Please wait...</string>
     <string name="uploading_picture">Uploading picture...</string>
     <string name="sending_report">Sending report...</string>
+    <string name="sex_not_selected">Choose a sex</string>
+    <string name="type_not_selected">Type not selected</string>
+    <string name="complexion_not_selected">Complexion not selected</string>
 </resources>

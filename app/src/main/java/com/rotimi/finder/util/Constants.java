@@ -41,4 +41,18 @@ public class Constants {
     public static final String SNAPSHOT = "SNAP_SHOT";
 
     public static final String SIGHTING_UPDATED = "sighting_updated";
+    public static final String ID = "id";
+    public static final String AGE = "age";
+    public static final String IMAGE_URL = "imageUrl";
+    public static final String LOCATION = "location";
+    public static final String TYPE = "type" ;
+    public static final String HEIGHT = "height";
+    public static final String MOBILE_NUMBER = "mobile_number";
+    public static final String COMMENT = "comment";
+    public static final String COMPLEXION = "complexion";
+    public static final String SEX = "sex";
+    public static final String BASE_STORAGE = "https://firebasestorage.googleapis.com" ;
+    public static final String _FOUND = "found";
+    public static final String POLICE = "police";
+    public static final String DATE = "date" ;
 }

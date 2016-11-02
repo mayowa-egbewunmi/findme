@@ -1,7 +1,10 @@
 package com.rotimi.finder.main.sightings;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +24,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.marcohc.toasteroid.Toasteroid;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.Reports;
+import com.rotimi.finder.db.Sightings;
+import com.rotimi.finder.db.Sightings_Table;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
@@ -36,9 +43,11 @@ import butterknife.ButterKnife;
 public class SightingListFragment extends Fragment {
 
     private static final String LOG = SightingListFragment.class.getName();
-    private List<SightingItem> sightings;
+    private List<Sightings> sightings;
     private SightingAdapter sightingAdapter;
     private Utility utils;
+
+    private String reportID;
 
     @BindView(R.id.sightings_recycler_view) RecyclerView sightingsRecyclerView;
     @BindView(R.id.sightings_empty) LinearLayout emptyView;
@@ -48,6 +57,15 @@ public class SightingListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        processIntent();
+    }
+
+    public static SightingListFragment newInstance(String reportId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.REPORT_ID, reportId);
+        SightingListFragment fragment = new SightingListFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -63,22 +81,16 @@ public class SightingListFragment extends Fragment {
         utils = new Utility(getActivity());
 
         sightings = new ArrayList<>(); //TODO: Do your API request here
-        for(int i = 0; i < 6; i++){
-            sightings.add(new SightingItem());
-        }
-        
-        showEmptyState();
-
         sightingAdapter = new SightingAdapter(getActivity(), sightings);
-
         sightingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         sightingsRecyclerView.setAdapter(sightingAdapter);
+
+        runSetUp();
 
         sightingsRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), sightingsRecyclerView, new IClickListener() {
 
             @Override
             public void onClick(View view, int position) {
-                SightingItem sightingItem = sightings.get(position);
                 //TODO: show sightings details
             }
 
@@ -92,9 +104,6 @@ public class SightingListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
-//        MenuItem searchItem = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        searchView.setOnQueryTextListener(this);
     }
 
     @Override
@@ -122,12 +131,23 @@ public class SightingListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().registerReceiver(sightingReceiver, new IntentFilter(Constants.SIGHTING_UPDATED));
+        runSetUp();
+    }
 
-        sightings = new ArrayList<>(); //GET sightings here
-        sightingAdapter.setData(sightings);
-        sightingAdapter.notifyDataSetChanged();
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(sightingReceiver);
+    }
 
-        showEmptyState();
+    public void runSetUp(){
+        sightings = SQLite.select().from(Sightings.class).where(Sightings_Table.report_id.eq(reportID)).queryList();
+        if(sightings!=null) {
+            sightingAdapter.setData(sightings);
+            sightingAdapter.notifyDataSetChanged();
+            showEmptyState();
+        }
     }
 
     public void showEmptyState() {
@@ -149,7 +169,6 @@ public class SightingListFragment extends Fragment {
         if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case Constants.DUMMY: {
-                    //uploadBulkMenu(data.getData().getPath());
                 }
             }
         }
@@ -166,4 +185,19 @@ public class SightingListFragment extends Fragment {
             }
         }
     }
+
+    public void processIntent(){
+
+        Bundle bundle = getArguments();
+        if(bundle.containsKey(Constants.REPORT_ID)){
+            reportID = bundle.getString(Constants.REPORT_ID);
+        }
+    }
+
+    BroadcastReceiver sightingReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            runSetUp();
+        }
+    };
 }

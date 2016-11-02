@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.marcohc.toasteroid.Toasteroid;
+import com.rotimi.finder.MainActivity;
 import com.rotimi.finder.R;
 import com.rotimi.finder.api.FindMeDatabase;
 import com.rotimi.finder.api.Storage;
@@ -77,10 +78,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
     private Uri imagePath;
     private Bitmap profilePicture;
     private ReportItem myReportItem;
-
-    private Storage storage;
-    private FindMeDatabase findmeDatabase;
-
     private ProgressDialog progressDialog;
 
     @Override
@@ -93,9 +90,6 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         ButterKnife.bind(this);
         utility = new Utility(this);
         myReportItem = new ReportItem();
-
-        storage = new Storage();
-        findmeDatabase = new FindMeDatabase(this);
 
         // Create an ArrayAdapter using the string array and a default spinner
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter.createFromResource(this, R.array.state_pros, android.R.layout.simple_spinner_item);
@@ -196,6 +190,18 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         }else{
             heightView.setError(null);
         }
+        if(sex==null){
+            valid = false;
+            Toasteroid.show(this, getString(R.string.sex_not_selected), Toasteroid.STYLES.ERROR);
+        }
+        if(complexion==null){
+            valid = false;
+            Toasteroid.show(this, getString(R.string.complexion_not_selected), Toasteroid.STYLES.ERROR);
+        }
+        if(type==null){
+            valid = false;
+            Toasteroid.show(this, getString(R.string.type_not_selected), Toasteroid.STYLES.ERROR);
+        }
         if(!pictureUploaded){
             Toasteroid.show(this, getString(R.string.picture_not_loaded), Toasteroid.STYLES.ERROR);
             valid = false;
@@ -223,7 +229,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         myReportItem.mobile_number = new SystemData(this).getString(Constants.PHONE);
         myReportItem.id = UUID.randomUUID().toString();
 
-        findmeDatabase.dbRef.child(Constants.REPORTS).child(myReportItem.id).setValue(myReportItem);
+        MainActivity.findMeDatabase.dbRef.child(Constants.REPORTS).child(myReportItem.id).setValue(myReportItem);
 
 //        String key = FindMeDatabase.dbRef.child(Constants.REPORTS).push().getKey();
 //        Map<String, Object> childUpdate = new HashMap<>();
@@ -237,7 +243,7 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         String name = filePath.substring(filePath.lastIndexOf("/"));
 
         Log.d(TAG, name+" ===== ");
-        StorageReference mountainsRef = storage.storageReference.child(name);
+        StorageReference mountainsRef = MainActivity.storage.storageReference.child(name);
 
         try {
             InputStream stream = new FileInputStream(new File(filePath));
@@ -251,10 +257,13 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
             }).addOnSuccessListener(taskSnapshot -> {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                Log.d(TAG, downloadUrl.getPath());
                 progressDialog.setMessage(getString(R.string.sending_report));
 
-                imageUrl = downloadUrl.getPath();
+                //HACK
+                imageUrl ="https://"+downloadUrl.getHost()+ downloadUrl.getPath().substring(0, downloadUrl.getPath().lastIndexOf("/")-1)
+                        +"%2F"+downloadUrl.getPath().substring(downloadUrl.getPath().lastIndexOf("/")+1)+"?"+downloadUrl.getQuery();
+
+                Log.d(TAG, imageUrl);
                 new Async().execute();
             });
         }catch (IOException e){
@@ -343,11 +352,12 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         }
     }
 
-    private class Async extends AsyncTask<Void, Void, Void>{
+    private class Async extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
             submitReport();
+
             return null;
         }
 
@@ -355,8 +365,9 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
-            Toasteroid.show(CreateMyReport.this, R.string.success_create_more, Toasteroid.STYLES.SUCCESS);
+            Toasteroid.show(CreateMyReport.this, R.string.success, Toasteroid.STYLES.SUCCESS);
         }
     }
+
 }
 

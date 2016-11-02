@@ -7,6 +7,7 @@ package com.rotimi.finder.main.myreports;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.Reports;
 import com.rotimi.finder.main.ReportDetails;
 import com.rotimi.finder.main.publicreports.ReportItem;
+import com.rotimi.finder.util.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,11 +29,12 @@ import butterknife.ButterKnife;
 
 public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuViewHolder> {
 
+    private static final String TAG = MyReportAdapter.class.getSimpleName();
     private Context context;
 
-    private List<ReportItem> myReportItems;
+    private List<Reports> myReportItems;
 
-    public MyReportAdapter(Context context, List<ReportItem> myReportItems) {
+    public MyReportAdapter(Context context, List<Reports> myReportItems) {
         this.context = context;
         this.myReportItems = myReportItems;
     }
@@ -45,21 +49,24 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
 
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
-        ReportItem reportItem = myReportItems.get(position);
-        holder.ageView.setText(reportItem.age);
+        Reports reportItem = myReportItems.get(position);
+        holder.ageView.setText("Age "+reportItem.age);
         holder.nameView.setText(reportItem.name);
         holder.sexView.setText(reportItem.sex);
         holder.complexionView.setText(reportItem.complexion);
-        Picasso.with(context).load(reportItem.imageUrl)
+        Picasso.with(context)
+                .load(reportItem.imageUrl)
                 .placeholder(R.drawable.empty_profile2)
-                .centerCrop()
                 .error(R.drawable.empty_profile2)
                 .into(holder.imgView);
 
         holder.frameView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReportDetails.class);
+            intent.putExtra(Constants.REPORT_ID, reportItem.id);
             context.startActivity(intent);
         });
+
+        Log.d(TAG, Constants.BASE_STORAGE + reportItem.imageUrl+" ==================== ");
     }
 
     @Override
@@ -67,7 +74,7 @@ public class MyReportAdapter extends RecyclerView.Adapter<MyReportAdapter.MenuVi
         return myReportItems.size();
     }
 
-    public void setData(List<ReportItem> myreports) {
+    public void setData(List<Reports> myreports) {
         this.myReportItems = myreports;
     }
 

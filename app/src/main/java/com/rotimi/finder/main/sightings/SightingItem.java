@@ -12,6 +12,7 @@ public class SightingItem {
     public String imageUrl;
     public String id;
     public String report_id;
+    public String date;
 
     public SightingItem(){}
 

@@ -1,5 +1,6 @@
 package com.rotimi.finder.main.sightings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,6 +32,7 @@ public class SightingActivity extends AppCompatActivity {
     @BindView(R.id.tabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
     private Utility utility;
+    private String reportID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class SightingActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        processIntent();
         runSetUp();
     }
 
@@ -54,8 +57,9 @@ public class SightingActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SightingCreateFragment(), Constants.CREATE_SIGHTINGS.toUpperCase());
-        adapter.addFragment(new SightingListFragment(), Constants.SIGTHING.toUpperCase());
+
+        adapter.addFragment(SightingCreateFragment.newInstance(reportID), Constants.CREATE_SIGHTINGS.toUpperCase());
+        adapter.addFragment(SightingListFragment.newInstance(reportID), Constants.SIGTHING.toUpperCase());
 
         viewPager.setAdapter(adapter);
     }
@@ -88,5 +92,11 @@ public class SightingActivity extends AppCompatActivity {
         }
     }
 
+    private void processIntent(){
+        Intent intent = getIntent();
+        if(intent.hasExtra(Constants.REPORT_ID)){
+            reportID = intent.getStringExtra(Constants.REPORT_ID);
+        }
+    }
 
 }

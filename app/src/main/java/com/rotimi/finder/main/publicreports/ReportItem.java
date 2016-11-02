@@ -19,8 +19,6 @@ public class ReportItem implements Serializable {
     public String id;
     public String found = "0";
     public String mobile_number;
-    public String found_location;
-    public String found_date;
 
     public ReportItem(){}
 }

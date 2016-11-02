@@ -74,13 +74,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
                     android:text="@string/sex_male"
-                    android:checked="true" />
+                    android:checked="false" />
 
                 <RadioButton
                     android:id="@+id/myreport.sex.female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
+                    android:checked="false"
                     android:text="@string/sex_female" />
             </RadioGroup>
 
@@ -146,13 +147,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
                     android:text="@string/complexion_light"
-                    android:checked="true" />
+                    android:checked="false" />
 
                 <RadioButton
                     android:id="@+id/myreport.complexion.dark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
+                    android:checked="false"
                     android:text="@string/complexion_dark" />
 
                 <RadioButton
@@ -160,6 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
+                    android:checked="false"
                     android:text="@string/complexion_brown" />
             </RadioGroup>
 
@@ -233,13 +236,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
                     android:text="@string/missing"
-                    android:checked="true" />
+                    android:checked="false" />
 
                 <RadioButton
                     android:id="@+id/myreport.type.kidnapped"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
+                    android:checked="false"
                     android:text="@string/kidnapped" />
 
                 <RadioButton
@@ -247,6 +251,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
+                    android:checked="false"
                     android:text="@string/wanted" />
             </RadioGroup>
 

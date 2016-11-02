@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.Reports;
 import com.rotimi.finder.main.ReportDetails;
 import com.rotimi.finder.util.Constants;
 import com.squareup.picasso.Picasso;
@@ -31,9 +32,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MenuViewHo
 
     private Context context;
 
-    private List<ReportItem> reports;
+    private List<Reports> reports;
 
-    public ReportAdapter(Context context, List<ReportItem> reports) {
+    public ReportAdapter(Context context, List<Reports> reports) {
         this.context = context;
         this.reports = reports;
     }
@@ -49,21 +50,21 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MenuViewHo
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
         
-        ReportItem reportItem = reports.get(position);
-        holder.ageView.setText(reportItem.age);
+        Reports reportItem = reports.get(position);
+        holder.ageView.setText("Age "+reportItem.age);
         holder.nameView.setText(reportItem.name);
         holder.commentView.setText(reportItem.comment);
         holder.sexView.setText(reportItem.sex);
         holder.complexionView.setText(reportItem.complexion);
-        Picasso.with(context).load(reportItem.imageUrl)
+        Picasso.with(context)
+                .load(Constants.BASE_STORAGE + reportItem.imageUrl)
                 .placeholder(R.drawable.empty_profile2)
-                .centerCrop()
                 .error(R.drawable.empty_profile2)
                 .into(holder.imgView);
         
         holder.frameView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReportDetails.class);
-            intent.putExtra(Constants.REPORT, reportItem);
+            intent.putExtra(Constants.REPORT_ID, reportItem.id);
             context.startActivity(intent);
         });
 
@@ -85,7 +86,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MenuViewHo
         return reports.size();
     }
 
-    public void setData(List<ReportItem> reports) {
+    public void setData(List<Reports> reports) {
         this.reports = reports;
     }
 

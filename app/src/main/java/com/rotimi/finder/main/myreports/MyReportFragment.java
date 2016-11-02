@@ -1,6 +1,9 @@
 package com.rotimi.finder.main.myreports;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,13 +20,17 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rotimi.finder.R;
 import com.rotimi.finder.api.FindMeDatabase;
+import com.rotimi.finder.db.Reports;
+import com.rotimi.finder.db.Reports_Table;
 import com.rotimi.finder.main.publicreports.ReportFragment;
 import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
+import com.rotimi.finder.util.SystemData;
 import com.rotimi.finder.util.Utility;
 
 import java.util.ArrayList;
@@ -37,7 +44,7 @@ public class MyReportFragment extends Fragment{
 
 
     private static final String LOG = ReportFragment.class.getName();
-    private List<ReportItem> myreports;
+    private List<Reports> myreports;
     private MyReportAdapter myreportsAdapter;
     private Utility utils;
 
@@ -74,7 +81,6 @@ public class MyReportFragment extends Fragment{
 
             @Override
             public void onClick(View view, int position) {
-                ReportItem ReportItem = myreports.get(position);
                 //TODO: show wanted details
             }
 
@@ -93,15 +99,24 @@ public class MyReportFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        
+        getActivity().registerReceiver(reportReceiver, new IntentFilter(Constants.REPORT_UPDATED));
         runSetUp();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(reportReceiver);
+    }
+
     public void runSetUp(){
-        //TODO:any means to get data?
-        myreportsAdapter.setData(myreports);
-        myreportsAdapter.notifyDataSetChanged();
-        showEmptyState();
+        String num = new SystemData(getActivity()).getString(Constants.PHONE);
+        myreports = SQLite.select().from(Reports.class).where(Reports_Table.mobile_number.eq(num)).queryList();
+        if(myreports!=null) {
+            myreportsAdapter.setData(myreports);
+            myreportsAdapter.notifyDataSetChanged();
+            showEmptyState();
+        }
     }
 
     public void showEmptyState() {
@@ -140,4 +155,11 @@ public class MyReportFragment extends Fragment{
             }
         }
     }
+
+    BroadcastReceiver reportReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            runSetUp();
+        }
+    };
 }

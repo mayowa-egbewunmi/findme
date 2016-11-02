@@ -1,6 +1,9 @@
 package com.rotimi.finder.main.publicreports;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,16 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.google.firebase.database.DataSnapshot;
 import com.marcohc.toasteroid.Toasteroid;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rotimi.finder.R;
-import com.rotimi.finder.api.FindMeDatabase;
+import com.rotimi.finder.db.Reports;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
 import com.rotimi.finder.util.Utility;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +33,7 @@ import butterknife.ButterKnife;
 public class ReportFragment extends Fragment {
 
     private static final String LOG = ReportFragment.class.getName();
-    private List<ReportItem> reports;
+    private List<Reports> reports;
     private ReportAdapter reportAdapter;
     private Utility utils;
 
@@ -110,19 +112,23 @@ public class ReportFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().registerReceiver(reportReceiver, new IntentFilter(Constants.REPORT_UPDATED));
         runSetUp();
     }
 
     public void runSetUp(){
-        //TODO? any means to get data via api?
-        reportAdapter.setData(reports);
-        reportAdapter.notifyDataSetChanged();
-        showEmptyState();
+        reports = SQLite.select().from(Reports.class).queryList();
+        if(reports!=null) {
+            reportAdapter.setData(reports);
+            reportAdapter.notifyDataSetChanged();
+            showEmptyState();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        getActivity().unregisterReceiver(reportReceiver);
     }
 
     public void showEmptyState() {
@@ -159,6 +165,13 @@ public class ReportFragment extends Fragment {
             }
         }
     }
+
+    BroadcastReceiver reportReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            runSetUp();
+        }
+    };
 
 //    public void uploadBulkMenu(String filePath){
 //        List<Menu> menus;

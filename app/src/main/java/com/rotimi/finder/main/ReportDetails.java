@@ -1,9 +1,11 @@
 package com.rotimi.finder.main;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,11 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marcohc.toasteroid.Toasteroid;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.rotimi.finder.MainActivity;
 import com.rotimi.finder.R;
+import com.rotimi.finder.db.Reports;
+import com.rotimi.finder.db.Reports_Table;
+import com.rotimi.finder.main.myreports.CreateMyReport;
 import com.rotimi.finder.main.publicreports.ReportItem;
 import com.rotimi.finder.main.sightings.SightingActivity;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.SystemData;
+import com.rotimi.finder.util.Utility;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -43,7 +51,11 @@ public class ReportDetails extends AppCompatActivity {
     @BindView(R.id.report_details_type) TextView typeView;
     @BindView(R.id.report_details_comment) TextView commentView;
     @BindView(R.id.report_details_report_found) TextView reportFoundView;
-    private ReportItem reportItem;
+    private String reportID;
+    private Reports reportItem;
+    private ProgressDialog progressDialog;
+
+    private Utility utility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +64,13 @@ public class ReportDetails extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        utility = new Utility(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         processIntent();
-
-        if(reportItem!= null)
-            displayReport();
+        runSetUp();
     }
 
     public void displayReport(){
@@ -69,7 +81,6 @@ public class ReportDetails extends AppCompatActivity {
 
         Picasso.with(this).load(reportItem.imageUrl)
                 .placeholder(R.drawable.empty_profile2)
-                .centerCrop()
                 .error(R.drawable.empty_profile2)
                 .into(pictureView);
 
@@ -84,6 +95,20 @@ public class ReportDetails extends AppCompatActivity {
         }else{
             reportFoundView.setVisibility(View.GONE);
         }
+
+        reportFoundView.setOnClickListener(v -> {
+            if(utility.isConnected())
+                new AsyncFound().execute();
+            else{
+                Toasteroid.show(this, R.string.connection_error, Toasteroid.STYLES.ERROR);
+            }
+        });
+    }
+
+    public void runSetUp(){
+        reportItem = SQLite.select().from(Reports.class).where(Reports_Table.id.eq(reportID)).querySingle();
+        if(reportItem!= null)
+            displayReport();
     }
 
     @Override
@@ -131,8 +156,8 @@ public class ReportDetails extends AppCompatActivity {
 
     private void processIntent(){
         Intent intent = getIntent();
-        if(intent.hasExtra(Constants.REPORT)){
-            reportItem = (ReportItem) getIntent().getSerializableExtra(Constants.REPORT);
+        if(intent.hasExtra(Constants.REPORT_ID)){
+            reportID = intent.getStringExtra(Constants.REPORT_ID);
         }
     }
 
@@ -152,4 +177,35 @@ public class ReportDetails extends AppCompatActivity {
             }
         }
     }
+
+    public void showProgress(){
+        progressDialog = new ProgressDialog(this,
+                R.style.AppTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(getString(R.string.wait));
+        progressDialog.show();
+    }
+
+    private class AsyncFound extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            MainActivity.findMeDatabase.dbRef.child(Constants.REPORTS).child(reportID).child("found").setValue("1");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            Toasteroid.show(ReportDetails.this, R.string.success, Toasteroid.STYLES.SUCCESS);
+        }
+    }
+
 }
