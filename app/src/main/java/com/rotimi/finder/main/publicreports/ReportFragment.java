@@ -21,6 +21,7 @@ import com.marcohc.toasteroid.Toasteroid;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rotimi.finder.R;
 import com.rotimi.finder.db.Reports;
+import com.rotimi.finder.db.Reports_Table;
 import com.rotimi.finder.util.Constants;
 import com.rotimi.finder.util.IClickListener;
 import com.rotimi.finder.util.RecyclerTouchListener;
@@ -117,7 +118,7 @@ public class ReportFragment extends Fragment {
     }
 
     public void runSetUp(){
-        reports = SQLite.select().from(Reports.class).queryList();
+        reports = SQLite.select().from(Reports.class).where(Reports_Table.found.eq("0")).queryList();
         if(reports!=null) {
             reportAdapter.setData(reports);
             reportAdapter.notifyDataSetChanged();
@@ -148,7 +149,6 @@ public class ReportFragment extends Fragment {
         if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case Constants.DUMMY: {
-
                 }
             }
         }
