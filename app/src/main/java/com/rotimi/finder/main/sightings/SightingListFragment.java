@@ -115,9 +115,7 @@ public class SightingListFragment extends Fragment {
     }
 
     public void runSetUp(){
-        Toast.makeText(getActivity(), reportID, Toast.LENGTH_LONG).show();
         sightings = SQLite.select().from(Sightings.class).where(Sightings_Table.report_id.eq(reportID)).orderBy(Sightings_Table._id, false).queryList();
-        Toast.makeText(getActivity(), "Position "+sightings.size(), Toast.LENGTH_LONG).show();
 
         if(sightings!=null) {
             sightingAdapter.setData(sightings);
