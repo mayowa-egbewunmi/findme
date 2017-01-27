@@ -51,6 +51,8 @@ public class ReportDetails extends AppCompatActivity {
     @BindView(R.id.report_details_type) TextView typeView;
     @BindView(R.id.report_details_comment) TextView commentView;
     @BindView(R.id.report_details_report_found) TextView reportFoundView;
+
+
     private String reportID;
     private Reports reportItem;
     private ProgressDialog progressDialog;

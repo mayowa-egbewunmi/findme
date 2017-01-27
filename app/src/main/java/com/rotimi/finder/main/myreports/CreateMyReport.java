@@ -58,8 +58,12 @@ public class CreateMyReport extends AppCompatActivity implements DialogListener 
 
     @BindView(R.id.myreport_age) TextView ageView;
     @BindView(R.id.myreport_comment) TextView commentView;
-    @BindViews({R.id.myreport_complexion_brown, R.id.myreport_complexion_dark, R.id.myreport_complexion_fair}) List<RadioButton> complexionViews;
-    @BindViews({R.id.myreport_type_kidnapped, R.id.myreport_type_missing, R.id.myreport_type_wanted}) List<RadioButton> typeViews;
+
+    @BindViews({R.id.myreport_complexion_brown, R.id.myreport_complexion_dark, R.id.myreport_complexion_fair})
+    List<RadioButton> complexionViews;
+    @BindViews({R.id.myreport_type_kidnapped, R.id.myreport_type_missing, R.id.myreport_type_wanted})
+    List<RadioButton> typeViews;
+
     @BindViews({R.id.myreport_sex_female, R.id.myreport_sex_male }) List<RadioButton> sexViews;
     @BindView(R.id.myreport_complexion) RadioGroup complexionGroupView;
     @BindView(R.id.myreport_sex) RadioGroup sexGroupView;

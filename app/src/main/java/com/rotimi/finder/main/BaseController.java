@@ -55,27 +55,6 @@ public class BaseController extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        int id = item.getItemId();
-//
-//        switch (id){
-//            case R.id.action_dashboard:{
-////                Intent intent = new Intent(getActivity(), Dashboard.class);
-////                startActivity(intent);
-//                return true;
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

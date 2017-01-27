@@ -63,7 +63,7 @@ public class MyReportFragment extends Fragment{
 
         ButterKnife.bind(this, view);
         utils = new Utility(getActivity());
-        myreports = new ArrayList<>(); //TODO: Do your API request here
+        myreports = new ArrayList<>();
 
         myreportsAdapter = new MyReportAdapter(getActivity(), myreports);
         myReportRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

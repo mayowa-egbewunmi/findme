@@ -14,7 +14,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/findme_96"
+        android:icon="@drawable/findme"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
@@ -44,7 +44,6 @@
         <activity android:name=".main.ReportDetails"
             android:label="@string/title_activity_my_report_details"
             android:theme="@style/MyMaterialTheme">
-
         </activity>
     </application>
 

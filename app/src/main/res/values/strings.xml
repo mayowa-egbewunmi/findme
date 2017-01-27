@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">findMe</string>
+    <string name="app_name">FindMe</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -52,7 +52,7 @@
     <string name="success">Success</string>
     <string name="call_customer">Call Customer</string>
     <string name="msg_customer">Message customer</string>
-    <string name="no_wanted">Security is important; report any suspicious/wanted individual now</string>
+    <string name="no_wanted">Security is important; report any suspicious, wanted or missing individual now!</string>
     <string name="no_customer">Add customer to make me excited</string>
     <string name="no_sales">Haba! You have no open sales.</string>
     <string name="close">Close</string>
@@ -104,7 +104,7 @@
     <string name="no_reports">No report created so far! Be conscious</string>
     <string name="title_activity_my_report_details">Report Details</string>
     <string name="title_activity_found">Founds</string>
-    <string name="no_found">We are finding? Join us in the search</string>
+    <string name="no_found">Together we can find them!</string>
     <string name="sample_date">10 days ago</string>
     <string name="date">Date</string>
     <string name="where">Location</string>
